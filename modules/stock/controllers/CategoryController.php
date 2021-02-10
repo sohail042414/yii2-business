@@ -1,19 +1,19 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\stock\controllers;
 
 use Yii;
-use app\models\AccountType;
-use app\models\SearchAccountType;
+use app\models\Category;
+use app\models\SearchCategory;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * AccountTypeController implements the CRUD actions for AccountType model.
+ * CategoryController implements the CRUD actions for Category model.
  */
-class AccountTypeController extends Controller
+class CategoryController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -41,12 +41,12 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Lists all AccountType models.
+     * Lists all Category models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchAccountType();
+        $searchModel = new SearchCategory();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -56,7 +56,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Displays a single AccountType model.
+     * Displays a single Category model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,13 +69,13 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Creates a new AccountType model.
+     * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AccountType();
+        $model = new Category();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -87,7 +87,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Updates an existing AccountType model.
+     * Updates an existing Category model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -107,7 +107,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Deletes an existing AccountType model.
+     * Deletes an existing Category model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -121,15 +121,15 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Finds the AccountType model based on its primary key value.
+     * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return AccountType the loaded model
+     * @return Category the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AccountType::findOne($id)) !== null) {
+        if (($model = Category::findOne($id)) !== null) {
             return $model;
         }
 

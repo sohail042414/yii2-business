@@ -1,19 +1,20 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\stock\controllers;
 
 use Yii;
-use app\models\AccountType;
-use app\models\SearchAccountType;
+use app\models\Purchase;
+use app\models\SearchPurchase;
+use app\models\PurchaseItem;
+use app\models\SearchPurchaseItem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * AccountTypeController implements the CRUD actions for AccountType model.
+ * PurchaseController implements the CRUD actions for Purchase model.
  */
-class AccountTypeController extends Controller
+class PurchaseController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -21,16 +22,6 @@ class AccountTypeController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index','create','update','view',],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],                    
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -41,12 +32,12 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Lists all AccountType models.
+     * Lists all Purchase models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchAccountType();
+        $searchModel = new SearchPurchase();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -56,7 +47,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Displays a single AccountType model.
+     * Displays a single Purchase model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,16 +60,23 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Creates a new AccountType model.
+     * Creates a new Purchase model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AccountType();
+        $model = new Purchase();
+        
+        $form_data = array();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(\Yii::$app->request->isPost) {
+            $form_data = Yii::$app->request->post();        
+            $form_data['Purchase']['status'] = 'new';        
+        }
+
+        if ($model->load($form_data) && $model->save()) {
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -87,7 +85,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Updates an existing AccountType model.
+     * Updates an existing Purchase model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -95,19 +93,53 @@ class AccountTypeController extends Controller
      */
     public function actionUpdate($id)
     {
+
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $form_data = array();
+
+        if(\Yii::$app->request->isPost) {
+            $form_data = Yii::$app->request->post();
+            $form_data['Purchase']['status'] = 'new';
+        }
+        
+
+        $searchModel = new SearchPurchaseItem();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+        $purchase_item = new PurchaseItem();
+        $purchase_item->purchase_id = $id;
+
+        if ($model->load($form_data) && $model->save()) {
+                    
+            $purchase_item->load($form_data);
+            $purchase_item->purchase_id = $id;
+            $purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
+            if($purchase_item->save()){
+                $purchase_item = new PurchaseItem();
+                $purchase_item->purchase_price = $id;
+                Yii::$app->session->setFlash('success_message', "Purchase Item added");
+            }
+
+            if($model->status == 'complete'){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            //return $this->redirect(['update', 'id' => $model->id]);
+
         }
 
         return $this->render('update', [
             'model' => $model,
+            'purchase_item' => $purchase_item,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Deletes an existing AccountType model.
+     * Deletes an existing Purchase model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -121,15 +153,15 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Finds the AccountType model based on its primary key value.
+     * Finds the Purchase model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return AccountType the loaded model
+     * @return Purchase the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AccountType::findOne($id)) !== null) {
+        if (($model = Purchase::findOne($id)) !== null) {
             return $model;
         }
 

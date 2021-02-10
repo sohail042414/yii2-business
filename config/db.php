@@ -3,9 +3,10 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=business_yii2',
-    'username' => 'root',
-    'password' => 'root',
+    'username' => 'phpmyadmin',
+    'password' => 'phpmy_pass',
     'charset' => 'utf8',
+    //'tablePrefix' => 'mt_'
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,
     //'schemaCacheDuration' => 60,

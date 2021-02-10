@@ -1,19 +1,19 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\stock\controllers;
 
 use Yii;
-use app\models\AccountType;
-use app\models\SearchAccountType;
+use app\models\Item;
+use app\models\SearchItem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
- * AccountTypeController implements the CRUD actions for AccountType model.
+ * ItemController implements the CRUD actions for Item model.
  */
-class AccountTypeController extends Controller
+class ItemController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -41,12 +41,12 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Lists all AccountType models.
+     * Lists all Item models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchAccountType();
+        $searchModel = new SearchItem();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -56,7 +56,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Displays a single AccountType model.
+     * Displays a single Item model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,13 +69,13 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Creates a new AccountType model.
+     * Creates a new Item model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AccountType();
+        $model = new Item();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -87,7 +87,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Updates an existing AccountType model.
+     * Updates an existing Item model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -107,7 +107,7 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Deletes an existing AccountType model.
+     * Deletes an existing Item model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -121,15 +121,15 @@ class AccountTypeController extends Controller
     }
 
     /**
-     * Finds the AccountType model based on its primary key value.
+     * Finds the Item model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return AccountType the loaded model
+     * @return Item the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AccountType::findOne($id)) !== null) {
+        if (($model = Item::findOne($id)) !== null) {
             return $model;
         }
 

@@ -43,6 +43,13 @@ $config = [
             ],
         ],
         'db' => $db,
+        'formatter' => [
+            'dateFormat' => 'd-M-Y',
+            'datetimeFormat' => 'd-M-Y H:i:s',
+            'timeFormat' => 'H:i:s',
+            'locale' => 'en-US', //your language locale
+            'defaultTimeZone' => 'Asia/Karachi', // time zone
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -52,17 +59,24 @@ $config = [
         ],
         */
     ],
+    'modules' => [
+        'stock' => [
+            'class' => 'app\modules\stock\Module',
+        ],
+    ],
     'params' => $params,
 ];
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
+    /*
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
+    */
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
