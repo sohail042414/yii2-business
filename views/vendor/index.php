@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\SearchVendor */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vendors');
+$this->title = Yii::t('app', 'Suppliers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vendor-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Vendor'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Supplier'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,7 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'phone',
-            'city',
+            [
+                'attribute' => 'city_id',
+                'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                'value' => function ($data) {
+                    return $data->getCity()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
+                },
+            ],
             'address',
             [
                 'attribute' => 'created_at',

@@ -20,9 +20,9 @@ class m210208_083854_table_client extends Migration
 
         $this->createTable('{{%client}}', [
             'id' => $this->primaryKey(),
+            'city_id' => $this->integer()->notNull(),            
             'name' => $this->string(32)->notNull()->unique(),      
-            'phone' => $this->string(16)->notNull(),            
-            'city' => $this->string(32)->notNull(),
+            'phone' => $this->string(16)->defaultValue(NUll),                            
             'address' => $this->string(96)->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),

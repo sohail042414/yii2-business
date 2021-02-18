@@ -71,7 +71,7 @@ class PurchaseController extends Controller
         $form_data = array();
 
         if(\Yii::$app->request->isPost) {
-            $form_data = Yii::$app->request->post();        
+            $form_data = Yii::$app->request->post();               
             $form_data['Purchase']['status'] = 'new';        
         }
 
@@ -95,7 +95,7 @@ class PurchaseController extends Controller
     {
 
         $model = $this->findModel($id);
-
+        
         $form_data = array();
 
         if(\Yii::$app->request->isPost) {
@@ -105,6 +105,7 @@ class PurchaseController extends Controller
         
 
         $searchModel = new SearchPurchaseItem();
+        $searchModel->purchase_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 
@@ -112,15 +113,8 @@ class PurchaseController extends Controller
         $purchase_item->purchase_id = $id;
 
         if ($model->load($form_data) && $model->save()) {
-                    
-            $purchase_item->load($form_data);
-            $purchase_item->purchase_id = $id;
-            $purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
-            if($purchase_item->save()){
-                $purchase_item = new PurchaseItem();
-                $purchase_item->purchase_price = $id;
-                Yii::$app->session->setFlash('success_message', "Purchase Item added");
-            }
+            
+            Yii::$app->session->setFlash('success_message', "Purchase information updated!");
 
             if($model->status == 'complete'){
                 return $this->redirect(['view', 'id' => $model->id]);

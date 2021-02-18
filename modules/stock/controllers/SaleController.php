@@ -4,10 +4,12 @@ namespace app\modules\stock\controllers;
 
 use Yii;
 use app\models\Sale;
+use app\models\SaleItem;
 use app\models\SearchSale;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\SearchSaleItem;
 
 /**
  * SaleController implements the CRUD actions for Sale model.
@@ -66,8 +68,17 @@ class SaleController extends Controller
     {
         $model = new Sale();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+                
+        $form_data = array();
+
+        if(\Yii::$app->request->isPost) {
+            $form_data = Yii::$app->request->post();               
+            $form_data['Sale']['status'] = 'new';        
+        }
+
+        if ($model->load($form_data) && $model->save()) {
+            //return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -86,12 +97,30 @@ class SaleController extends Controller
     {
         $model = $this->findModel($id);
 
+        $form_data = array();
+
+        if(\Yii::$app->request->isPost) {
+            $form_data = Yii::$app->request->post();
+            $form_data['Purchase']['status'] = 'new';
+        }
+        
+
+        $searchModel = new SearchSaleItem();
+        $searchModel->sale_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $sale_item = new SaleItem();
+        $sale_item->sale_id = $id;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'sale_item' => $sale_item,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

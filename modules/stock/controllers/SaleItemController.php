@@ -3,16 +3,18 @@
 namespace app\modules\stock\controllers;
 
 use Yii;
-use app\models\PurchaseItem;
-use app\models\SearchPurchaseItem;
+use app\models\SaleItem;
+use app\models\Item;
+use app\models\Sale;
+use app\models\SearchSaleItem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PurchaseitemController implements the CRUD actions for PurchaseItem model.
+ * SaleItemController implements the CRUD actions for SaleItem model.
  */
-class PurchaseitemController extends Controller
+class SaleItemController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +32,12 @@ class PurchaseitemController extends Controller
     }
 
     /**
-     * Lists all PurchaseItem models.
+     * Lists all SaleItem models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchPurchaseItem();
+        $searchModel = new SearchSaleItem();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +47,7 @@ class PurchaseitemController extends Controller
     }
 
     /**
-     * Displays a single PurchaseItem model.
+     * Displays a single SaleItem model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +60,41 @@ class PurchaseitemController extends Controller
     }
 
     /**
-     * Creates a new PurchaseItem model.
+     * Creates a new SaleItem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+
+
     public function actionCreate()
     {
-        $model = new PurchaseItem();
+        $model = new SaleItem();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->sale_total = $model->sale_price*$model->quantity;
+            $model->total_weight = $model->weight*$model->quantity;
+
+            if($model->save()){
+
+                $sale = Sale::find($model->sale_id)->one();
+
+                $sale->calculateTotalAmount();
+
+                Yii::$app->session->setFlash('success_message', "Item Added!");   
+
+            }else{
+                Yii::$app->session->setFlash('error_message', "Item not added, there was some error !");
+            }          
+        }
+
+        return $this->redirect(['sale/update', 'id' => $model->sale_id]);
+    }
+
+    /*
+    public function actionCreate222()
+    {
+        $model = new SaleItem();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -74,9 +104,9 @@ class PurchaseitemController extends Controller
             'model' => $model,
         ]);
     }
-
+    */
     /**
-     * Updates an existing PurchaseItem model.
+     * Updates an existing SaleItem model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +126,7 @@ class PurchaseitemController extends Controller
     }
 
     /**
-     * Deletes an existing PurchaseItem model.
+     * Deletes an existing SaleItem model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,16 +139,26 @@ class PurchaseitemController extends Controller
         return $this->redirect(['index']);
     }
 
+
+    public function actionDetails()
+    {
+        $id = Yii::$app->request->post('id');
+        
+        $data = Item::findOne($id)->toArray();
+        
+        return $this->asJson($data);
+        
+    }
     /**
-     * Finds the PurchaseItem model based on its primary key value.
+     * Finds the SaleItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return PurchaseItem the loaded model
+     * @return SaleItem the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = PurchaseItem::findOne($id)) !== null) {
+        if (($model = SaleItem::findOne($id)) !== null) {
             return $model;
         }
 

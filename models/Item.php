@@ -39,8 +39,8 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category', 'name','purchase_price','sale_price'], 'required'],
-            [['category', 'created_at', 'updated_at','purchase_price','sale_price'], 'integer'],
+            [['category', 'name','purchase_price','sale_price','weight'], 'required'],
+            [['category', 'created_at','weight' ,'updated_at','purchase_price','sale_price'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 64],
             [['name'], 'unique'],

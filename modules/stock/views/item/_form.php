@@ -16,11 +16,13 @@ use app\models\Category;
 
     <?php // $form->field($model, 'category')->textInput() ?>
 
-    <?= $form->field($model, 'category')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'title'), ['prompt' => 'None']) ?>
+    <?= $form->field($model, 'category')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'title'), ['prompt' => 'Select']) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'weight')->textInput() ?>
 
     <?= $form->field($model, 'purchase_price')->textInput() ?>
 

@@ -28,7 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'vendor_id',
+            //'vendor_id',
+            [
+                'attribute' => 'vendor_id',
+                'label' => 'Vendor',
+                'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                'value' => function ($data) {
+                    return $data->getVendor()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
+                },
+            ],
             'notes:ntext',
             'total_amount',
             'status',

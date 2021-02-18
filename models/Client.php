@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\City;
 use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "{{%client}}".
@@ -38,9 +39,9 @@ class Client extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'city', 'address'], 'required'],
-            //[['created_at', 'updated_at'], 'integer'],
-            [['name', 'city'], 'string', 'max' => 32],
+            [['name', 'city_id'], 'required'],
+            [['city_id'], 'integer'],
+            [['name'], 'string', 'max' => 32],
             [['phone'], 'string', 'max' => 16],
             [['address'], 'string', 'max' => 96],
             [['name'], 'unique'],
@@ -57,7 +58,7 @@ class Client extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'phone' => 'Phone',
-            'city' => 'City',
+            'city_id' => 'City',
             'address' => 'Address',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -71,5 +72,10 @@ class Client extends \yii\db\ActiveRecord
     public static function find()
     {
         return new ClientQuery(get_called_class());
+    }
+
+    public function getCity()
+    {           
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 }

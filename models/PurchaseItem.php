@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use app\models\Item;
 
 /**
  * This is the model class for table "{{%purchase_item}}".
@@ -70,5 +71,10 @@ class PurchaseItem extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PurchaseItemQuery(get_called_class());
+    }
+
+    public function getItem()
+    {           
+        return $this->hasOne(Item::className(), ['id' => 'item_id']);
     }
 }

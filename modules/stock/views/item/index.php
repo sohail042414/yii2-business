@@ -31,8 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'category',
             'name',
             'purchase_price',
-            'sale_price',            
-            'description:ntext',
+            'sale_price', 
+            'weight',           
+            //'description:ntext',
             [
                 'attribute'=> 'created_at',
                 'format' => 'date'

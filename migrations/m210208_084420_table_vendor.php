@@ -20,13 +20,13 @@ class m210208_084420_table_vendor extends Migration
 
         $this->createTable('{{%vendor}}', [
             'id' => $this->primaryKey(),
+            'city_id' => $this->integer()->notNull(), 
             'name' => $this->string(32)->notNull()->unique(),      
-            'phone' => $this->string(16)->notNull(),            
-            'city' => $this->string(32)->notNull(),
+            'phone' => $this->string(16)->defaultValue(NUll),            
             'address' => $this->string(96)->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-                ], $tableOptions);
+        ], $tableOptions);
 
     }
 

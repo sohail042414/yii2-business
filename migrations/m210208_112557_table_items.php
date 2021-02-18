@@ -21,7 +21,8 @@ class m210208_112557_table_items extends Migration
         $this->createTable('{{%item}}', [
             'id' => $this->primaryKey(),
             'category' => $this->integer()->notNull(),
-            'name' => $this->string(64)->notNull()->unique(),      
+            'name' => $this->string(64)->notNull()->unique(),   
+            'weight' => $this->integer()->notNull()->defaultValue(0),
             'description' => $this->text()->defaultValue(null),
             'purchase_price' => $this->integer()->notNull()->defaultValue(0),                      
             'sale_price' => $this->integer()->notNull()->defaultValue(0),                      

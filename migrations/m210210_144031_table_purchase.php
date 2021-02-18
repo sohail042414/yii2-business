@@ -21,6 +21,7 @@ class m210210_144031_table_purchase extends Migration
         $this->createTable('{{%purchase}}', [
             'id' => $this->primaryKey(),
             'vendor_id' => $this->integer()->notNull(),
+            'account_id' => $this->integer()->notNull()->defaultValue(0),
             'notes' => $this->text()->defaultValue(null),
             'total_amount' => $this->integer()->notNull()->defaultValue(0),                      
             'status' => $this->string(16)->notNull()->defaultValue('new'),                      

@@ -18,7 +18,7 @@ class SearchClient extends Client
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'phone', 'city', 'address'], 'safe'],
+            [['name', 'phone', 'city_id', 'address'], 'safe'],
         ];
     }
 
@@ -65,7 +65,7 @@ class SearchClient extends Client
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'city', $this->city])
+            ->andFilterWhere(['=', 'city_id', $this->city_id])
             ->andFilterWhere(['like', 'address', $this->address]);
 
         return $dataProvider;

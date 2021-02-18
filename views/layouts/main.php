@@ -42,19 +42,19 @@ AppAsset::register($this);
                         'items'=>[
                             ['label'=>'Categories', 'url'=>['/stock/category/index']],
                             ['label'=>'Items', 'url'=>['/stock/item/index']],
-                            ['label'=>'Purchase', 'url'=>['/stock/purchase/index']],
-                            ['label'=>'Sale', 'url'=>['/stock/sale/index']],
+                            ['label'=>'Purchase List', 'url'=>['/stock/purchase/index']],
+                            ['label'=>'Sales/Bills', 'url'=>['/stock/sale/index']],
                         ]
                     ],
-                    ['label' => 'Vendors', 'url' => ['/vendor/index']],
-                    ['label' => 'Clients', 'url' => ['/client/index']],
+                    ['label' => 'Suppliers', 'url' => ['/vendor/index']],
+                    ['label' => 'Customers', 'url' => ['/client/index']],
                     [
                         'label'=>'Accounts', 
                         'url'=>['/accounts/index'], 
                         'items'=>[
-                            ['label'=>'Accounts Tree', 'url'=>['/account/tree/index']],
-                            ['label'=>'Accounts Receivable', 'url'=>['/account/payable/index']],
-                            ['label'=>'Accounts Payable', 'url'=>['/account/receivable/index']],
+                            ['label'=>'Accounts Tree', 'url'=>['/accounts/tree/index']],
+                            ['label'=>'Accounts Receivable', 'url'=>['/accounts/receivable/index']],
+                            ['label'=>'Accounts Payable', 'url'=>['/accounts/payable/index']],
                         ]
                     ],
                     [
@@ -64,6 +64,13 @@ AppAsset::register($this);
                             ['label'=>'Trail Balance', 'url'=>['/reports/trailbalance/index']],
                             ['label'=>'By Vendor', 'url'=>['/account/payable/index']],
                             ['label'=>'By Client', 'url'=>['/account/receivable/index']],
+                        ]
+                    ],
+                    [
+                        'label'=>'Others',         
+                        'items'=>[
+                            ['label'=>'Cities', 'url'=>['/city/index']],
+                            ['label'=>'Units', 'url'=>['/unit/index']]
                         ]
                     ],
                 ];                    

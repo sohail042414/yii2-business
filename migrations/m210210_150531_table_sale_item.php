@@ -24,6 +24,9 @@ class m210210_150531_table_sale_item extends Migration
             'sale_id' => $this->integer()->notNull(),
             'item_id' => $this->integer()->notNull(),
             'quantity' => $this->integer()->notNull(),
+            'shortage' => $this->integer()->notNull()->defaultValue(0),
+            'weight' => $this->integer()->notNull(),
+            'total_weight' => $this->integer()->notNull(),
             'sale_price' => $this->integer()->notNull(),
             'sale_total' => $this->integer()->notNull(),
             'created_at' => $this->integer()->notNull(),
@@ -36,8 +39,10 @@ class m210210_150531_table_sale_item extends Migration
      */
     public function safeDown()
     {
-        echo "m210210_150531_table_sale_item cannot be reverted.\n";
-        return false;
+        $this->dropTable('{{%sale_item}}');
+        return true;
+        // echo "m210210_150531_table_sale_item cannot be reverted.\n";
+        // return false;
     }
 
     /*
