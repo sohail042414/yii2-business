@@ -126,7 +126,7 @@ class PurchaseItemController extends Controller
      */
     public function actionDelete($id)
     {
-
+        
         $model = $this->findModel($id);
         $purchase_id = $model->purchase_id;
         $model->delete();

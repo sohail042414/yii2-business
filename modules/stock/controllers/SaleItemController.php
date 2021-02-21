@@ -25,7 +25,7 @@ class SaleItemController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -134,9 +134,18 @@ class SaleItemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $sale_id = $model->sale_id;
+        $model->delete();
+        $sale = Sale::find($sale_id)->one();
+        $sale->calculateTotalAmount();
+        Yii::$app->session->setFlash('success_message', "Itm deleted");
+        return $this->redirect(Yii::$app->request->referrer ?: ['sale/update', 'id' => $sale_id]);
+        //return $this->redirect(['sale/update', 'id' => $sale_id]);
+
+        // $this->findModel($id)->delete();
+        // return $this->redirect(['index']);
     }
 
 

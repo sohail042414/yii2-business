@@ -60,8 +60,8 @@ class SearchItem extends Item
         $query->andFilterWhere([
             'id' => $this->id,
             'category' => $this->category,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            //'created_at' => $this->created_at,
+            //'updated_at' => $this->updated_at,
             'sale_price' => $this->sale_price,
             'purchase_price' => $this->purchase_price,
         ]);

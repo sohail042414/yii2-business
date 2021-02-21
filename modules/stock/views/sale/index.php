@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\SearchSale */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Sales');
+$this->title = Yii::t('app', 'Bills/Sales');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sale-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Sale'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Bill/Sale'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -26,16 +26,33 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'client_id',
-            'notes:ntext',
             'total_amount',
             'status',
-            //'created_at',
-            //'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',            
+                'buttons' => [
+                    'update' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-pencil"></span>',             
+                            $url,['class'=>'btn btn-primary']);            
+                    },     
+                    'view' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-eye-open"></span>',             
+                            $url,['class'=>'btn btn-primary']);            
+                    },  
+                    'delete' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-trash"></span>',             
+                            $url,['class'=>'btn btn-primary']);            
+                    },         
+                ],
+            
+            ],
         ],
     ]); ?>
 

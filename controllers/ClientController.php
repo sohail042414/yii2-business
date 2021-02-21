@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Client;
+use app\models\City;
 use app\models\SearchClient;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -25,7 +26,7 @@ class ClientController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view',],
+                        'actions' => ['index','create','update','view','city'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    
@@ -106,6 +107,13 @@ class ClientController extends Controller
         ]);
     }
 
+
+    public function actionCity($id)
+    {
+        $model = $this->findModel($id);
+        
+        return $this->asJson($model->toArray());
+    }
     /**
      * Deletes an existing Client model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

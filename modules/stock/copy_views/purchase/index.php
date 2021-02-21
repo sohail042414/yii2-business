@@ -4,18 +4,18 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\SearchItem */
+/* @var $searchModel app\models\SearchPurchase */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Items');
+$this->title = Yii::t('app', 'Purchases');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="item-index">
+<div class="purchase-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Item'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Purchase'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -26,24 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
             'id',
+            //'vendor_id',
             [
-                'attribute' => 'category',
+                'attribute' => 'vendor_id',
+                'label' => 'Vendor',
                 'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
                 'value' => function ($data) {
-                    return $data->getCategory()->one()->title; // $data['name'] for array data, e.g. using SqlDataProvider.
+                    return $data->getVendor()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
                 },
             ],
-            'name',
-            'purchase_price',
-            'sale_price', 
-            'weight',           
-            //'description:ntext',
-            // [
-            //     'attribute'=> 'created_at',
-            //     'format' => 'date'
-            // ],
+            'notes:ntext',
+            'total_amount',
+            'status',
+            //'created_at',
             //'updated_at',
+
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

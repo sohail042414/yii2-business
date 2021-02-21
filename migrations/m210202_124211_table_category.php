@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m210208_112044_table_category
  */
-class m210208_112044_table_category extends Migration
+class m210202_124211_table_category extends Migration
 {
     /**
      * {@inheritdoc}
@@ -25,6 +25,42 @@ class m210208_112044_table_category extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);
+
+        $this->populateData();
+    }
+
+    private function populateData(){
+
+        $this->insert('{{%category}}', [
+            'title' => 'Supreme Tea',
+            'create_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%category}}', [
+            'title' => 'Lipton Tea',
+            'create_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%category}}', [
+            'title' => 'Tapal Dany Dar Tea',
+            'create_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%category}}', [
+            'title' => ' Farooq Tea',
+            'create_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%category}}', [
+            'title' => ' Rawal Tea',
+            'create_at' => time(),
+            'updated_at' => time(),
+        ]);
+
     }
 
     /**

@@ -43,7 +43,7 @@ AppAsset::register($this);
                             ['label'=>'Categories', 'url'=>['/stock/category/index']],
                             ['label'=>'Items', 'url'=>['/stock/item/index']],
                             ['label'=>'Purchase List', 'url'=>['/stock/purchase/index']],
-                            ['label'=>'Sales/Bills', 'url'=>['/stock/sale/index']],
+                            ['label'=>'Bills/Sales', 'url'=>['/stock/sale/index']],
                         ]
                     ],
                     ['label' => 'Suppliers', 'url' => ['/vendor/index']],

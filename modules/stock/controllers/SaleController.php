@@ -3,13 +3,16 @@
 namespace app\modules\stock\controllers;
 
 use Yii;
-use app\models\Sale;
-use app\models\SaleItem;
-use app\models\SearchSale;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use app\models\Sale;
+use app\models\SaleItem;
+use app\models\SearchSale;
 use app\models\SearchSaleItem;
+
 
 /**
  * SaleController implements the CRUD actions for Sale model.
@@ -22,10 +25,20 @@ class SaleController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index','create','update','view','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],                    
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -54,8 +67,15 @@ class SaleController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new SearchSaleItem();
+        $searchModel->sale_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -67,8 +87,16 @@ class SaleController extends Controller
     public function actionCreate()
     {
         $model = new Sale();
+        
+        $id = 0;
 
-                
+        $searchModel = new SearchSaleItem();
+        $searchModel->sale_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $sale_item = new SaleItem();
+        $sale_item->sale_id = $id;
+
         $form_data = array();
 
         if(\Yii::$app->request->isPost) {
@@ -76,13 +104,38 @@ class SaleController extends Controller
             $form_data['Sale']['status'] = 'new';        
         }
 
+        $model->total_amount = 0;
+        $model->cash_amount = 0;
+        $model->debit_amount = 0;
+        $model->previous_balance=0;
+        $model->builty_charges=0;
+        $model->labour_charges=0;
+        $model->other_charges=0;
+        $model->discount = 0;
+
         if ($model->load($form_data) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id]);
-            return $this->redirect(['update', 'id' => $model->id]);
+            
+            $sale_item->load($form_data);
+            $sale_item->sale_id = $model->id;
+            $sale_item->sale_total = $sale_item->sale_price*$sale_item->quantity;
+            $sale_item->total_weight = $sale_item->weight*$sale_item->quantity;
+
+            if($sale_item->save()){
+                $model->calculateTotalAmount();
+                return $this->redirect(['update', 'id' => $model->id]);            
+            }else{
+                echo '<pre>';
+                print_r($sale_item->errors);
+                exit; 
+            }
+
         }
 
         return $this->render('create', [
             'model' => $model,
+            'sale_item' => $sale_item,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -104,7 +157,6 @@ class SaleController extends Controller
             $form_data['Purchase']['status'] = 'new';
         }
         
-
         $searchModel = new SearchSaleItem();
         $searchModel->sale_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -113,8 +165,26 @@ class SaleController extends Controller
         $sale_item->sale_id = $id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+            if(!empty($form_data['SaleItem']['item_id'])){
+
+                $sale_item->load($form_data);
+                $sale_item->sale_id = $model->id;
+                $sale_item->sale_total = $sale_item->sale_price*$sale_item->quantity;
+                $sale_item->total_weight = $sale_item->weight*$sale_item->quantity;
+                $sale_item->save();    
+            }
+            
+            $model->calculateTotalAmount();
+
+            if($model->status == 'complete'){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            return $this->redirect(['update', 'id' => $model->id]);
         }
+
+        $model->getNetTotal();
 
         return $this->render('update', [
             'model' => $model,

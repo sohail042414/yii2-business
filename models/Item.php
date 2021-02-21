@@ -5,6 +5,10 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
+use app\models\Category;
+use app\models\SaleItem;
+use app\models\PurchaseItem;
+
 /**
  * This is the model class for table "{{%item}}".
  *
@@ -69,5 +73,21 @@ class Item extends \yii\db\ActiveRecord
     public static function find()
     {
         return new ItemQuery(get_called_class());
+    }
+
+    public function getSaleItems()
+    {
+        return $this->hasMany(SaleItem::className(), ['item_id' => 'id']);
+    }
+
+    public function getPurchaseItems()
+    {
+        return $this->hasMany(PurchaseItem::className(), ['item_id' => 'id']);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category']);
+        // return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 }

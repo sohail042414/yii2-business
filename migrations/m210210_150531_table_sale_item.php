@@ -26,9 +26,9 @@ class m210210_150531_table_sale_item extends Migration
             'quantity' => $this->integer()->notNull(),
             'shortage' => $this->integer()->notNull()->defaultValue(0),
             'weight' => $this->integer()->notNull(),
-            'total_weight' => $this->integer()->notNull(),
+            'total_weight' => $this->integer()->notNull()->defaultValue(0),
             'sale_price' => $this->integer()->notNull(),
-            'sale_total' => $this->integer()->notNull(),
+            'sale_total' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);

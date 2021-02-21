@@ -26,23 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
             'id',
-            [
-                'attribute' => 'category',
-                'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
-                'value' => function ($data) {
-                    return $data->getCategory()->one()->title; // $data['name'] for array data, e.g. using SqlDataProvider.
-                },
-            ],
+            'category',
             'name',
             'purchase_price',
             'sale_price', 
             'weight',           
             //'description:ntext',
-            // [
-            //     'attribute'=> 'created_at',
-            //     'format' => 'date'
-            // ],
+            [
+                'attribute'=> 'created_at',
+                'format' => 'date'
+            ],
             //'updated_at',
             ['class' => 'yii\grid\ActionColumn'],
         ],

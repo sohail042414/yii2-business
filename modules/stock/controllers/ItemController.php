@@ -25,7 +25,7 @@ class ItemController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view',],
+                        'actions' => ['index','create','update','view','delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    
@@ -115,7 +115,16 @@ class ItemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $sale_items_count = $model->getSaleItems()->count();
+        $purchase_items_count = $model->getPurchaseItems()->count();
+
+        if($sale_items_count > 0 || $purchase_items_count > 0){
+            Yii::$app->session->setFlash('error_message', "Item cannot be deleted, it has been used in sales/purchases!");  
+        }else{
+            $model->delete();
+        }
 
         return $this->redirect(['index']);
     }
