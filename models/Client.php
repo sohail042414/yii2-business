@@ -78,4 +78,20 @@ class Client extends \yii\db\ActiveRecord
     {           
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
+
+    public function createAccounts(){
+
+        $account = new Account();
+        $account->type = 'E';
+        $account->parent = 0;
+        $account->title = $this->name;
+        $account->save();
+
+        $vendor_account = new VendorAccount();
+        $vendor_account->account_id = $account->id;
+        $vendor_account->default = true;
+        $vendor_account->vendor_id;
+        $vendor_account->save();
+
+    }
 }

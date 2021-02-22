@@ -78,6 +78,7 @@ class VendorController extends Controller
         $model = new Vendor();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->createAccounts();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

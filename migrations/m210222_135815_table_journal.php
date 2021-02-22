@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m210210_150531_table_sale_item
+ * Class m210222_135815_table_journal
  */
-class m210210_150531_table_sale_item extends Migration
+class m210222_135815_table_journal extends Migration
 {
     /**
      * {@inheritdoc}
@@ -19,30 +19,27 @@ class m210210_150531_table_sale_item extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%sale_item}}', [
+        $this->createTable('{{%journal}}', [
             'id' => $this->primaryKey(),
-            'sale_id' => $this->integer()->notNull(),
-            'item_id' => $this->integer()->notNull(),
-            'quantity' => $this->integer()->notNull(),
-            'shortage' => $this->integer()->notNull()->defaultValue(0),
-            'weight' => $this->integer()->notNull(),
-            'total_weight' => $this->integer()->notNull()->defaultValue(0),
-            'sale_price' => $this->integer()->notNull(),
-            'sale_total' => $this->integer()->notNull()->defaultValue(0),
+            'journal_number' => $this->string(20)->notNull()->defaultValue('--'),
+            'type' => "ENUM('sale', 'purchase', 'payment','deposit')",
+            'journal_date' => $this->date()->notNull(), 
+            'description' => $this->text(),
+            'status'=> "ENUM('pending','approved','canceled','voided') DEFAULT 'pending'",
+            'created_by' => $this->integer()->notNull()->defaultValue(1),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);
     }
 
-    
     /**
      * {@inheritdoc}
      */
     public function safeDown()
     {
-        $this->dropTable('{{%sale_item}}');
+        $this->dropTable('{{%journal}}');
         return true;
-        // echo "m210210_150531_table_sale_item cannot be reverted.\n";
+        // echo "m210222_135815_table_journal cannot be reverted.\n";
         // return false;
     }
 
@@ -55,7 +52,7 @@ class m210210_150531_table_sale_item extends Migration
 
     public function down()
     {
-        echo "m210210_150531_table_sale_item cannot be reverted.\n";
+        echo "m210222_135815_table_journal cannot be reverted.\n";
 
         return false;
     }

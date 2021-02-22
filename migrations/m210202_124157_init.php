@@ -54,6 +54,7 @@ class m210202_124157_init extends Migration
 
     public function safeDown() {
         $this->dropTable('{{%user}}');
+        return true;
     }
 
     /*

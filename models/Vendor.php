@@ -3,8 +3,12 @@
 namespace app\models;
 
 use Yii;
-use app\models\City;
 use yii\behaviors\TimestampBehavior;
+
+use app\models\City;
+use app\models\Account;
+use app\models\VendorAccount;
+
 
 /**
  * This is the model class for table "{{%vendor}}".
@@ -81,4 +85,21 @@ class Vendor extends \yii\db\ActiveRecord
     {           
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
+
+    public function createAccounts(){
+
+        $account = new Account();
+        $account->type = 'A';
+        $account->parent = 0;
+        $account->title = $this->name;
+        $account->save();
+
+        $vendor_account = new VendorAccount();
+        $vendor_account->account_id = $account->id;
+        $vendor_account->default = true;
+        $vendor_account->vendor_id;
+        $vendor_account->save();
+
+    }
+
 }

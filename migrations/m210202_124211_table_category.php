@@ -33,31 +33,31 @@ class m210202_124211_table_category extends Migration
 
         $this->insert('{{%category}}', [
             'title' => 'Supreme Tea',
-            'create_at' => time(),
+            'created_at' => time(),
             'updated_at' => time(),
         ]);
 
         $this->insert('{{%category}}', [
             'title' => 'Lipton Tea',
-            'create_at' => time(),
+            'created_at' => time(),
             'updated_at' => time(),
         ]);
 
         $this->insert('{{%category}}', [
             'title' => 'Tapal Dany Dar Tea',
-            'create_at' => time(),
+            'created_at' => time(),
             'updated_at' => time(),
         ]);
 
         $this->insert('{{%category}}', [
             'title' => ' Farooq Tea',
-            'create_at' => time(),
+            'created_at' => time(),
             'updated_at' => time(),
         ]);
 
         $this->insert('{{%category}}', [
             'title' => ' Rawal Tea',
-            'create_at' => time(),
+            'created_at' => time(),
             'updated_at' => time(),
         ]);
 

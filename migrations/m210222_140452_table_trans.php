@@ -3,46 +3,43 @@
 use yii\db\Migration;
 
 /**
- * Class m210210_150531_table_sale_item
+ * Class m210222_140452_table_trans
  */
-class m210210_150531_table_sale_item extends Migration
+class m210222_140452_table_trans extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%sale_item}}', [
+        $this->createTable('{{%trans}}', [
             'id' => $this->primaryKey(),
-            'sale_id' => $this->integer()->notNull(),
-            'item_id' => $this->integer()->notNull(),
-            'quantity' => $this->integer()->notNull(),
-            'shortage' => $this->integer()->notNull()->defaultValue(0),
-            'weight' => $this->integer()->notNull(),
-            'total_weight' => $this->integer()->notNull()->defaultValue(0),
-            'sale_price' => $this->integer()->notNull(),
-            'sale_total' => $this->integer()->notNull()->defaultValue(0),
+            'journal_id' => $this->integer()->notNull(),
+            'account_id' => $this->integer()->notNull(),
+            'type'=> "ENUM('d', 'c')",
+            'debit' => $this->integer()->notNull(),
+            'credit' => $this->integer()->notNull(),
+            'description' => $this->text(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);
+
     }
 
-    
     /**
      * {@inheritdoc}
      */
     public function safeDown()
     {
-        $this->dropTable('{{%sale_item}}');
+        $this->dropTable('{{%trans}}');
         return true;
-        // echo "m210210_150531_table_sale_item cannot be reverted.\n";
+        // echo "m210222_140452_table_trans cannot be reverted.\n";
         // return false;
     }
 
@@ -55,7 +52,7 @@ class m210210_150531_table_sale_item extends Migration
 
     public function down()
     {
-        echo "m210210_150531_table_sale_item cannot be reverted.\n";
+        echo "m210222_140452_table_trans cannot be reverted.\n";
 
         return false;
     }
