@@ -25,7 +25,7 @@ class VendorController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view',],
+                        'actions' => ['index','create','update','view','city'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    
@@ -119,6 +119,14 @@ class VendorController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+
+    public function actionCity($id)
+    {
+        $model = $this->findModel($id);
+        
+        return $this->asJson($model->toArray());
     }
 
     /**

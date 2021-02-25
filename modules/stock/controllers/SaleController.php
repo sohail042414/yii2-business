@@ -203,7 +203,15 @@ class SaleController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
+
+        $model = $this->findModel($id);
+        if($model->status == 'new'){
+            $model->delete();
+            Yii::$app->session->setFlash('success_message', "Bill/Sale deleted!");
+        }else{
+            Yii::$app->session->setFlash('error_message', "Cannot delete the Bill/Sale!");
+        }
 
         return $this->redirect(['index']);
     }

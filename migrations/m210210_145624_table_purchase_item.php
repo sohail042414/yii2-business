@@ -25,6 +25,9 @@ class m210210_145624_table_purchase_item extends Migration
             'quantity' => $this->integer()->notNull(),
             'purchase_price' => $this->integer()->notNull(),
             'purchase_total' => $this->integer()->notNull(),
+            'weight' => $this->integer()->notNull(),
+            'total_weight' => $this->integer()->notNull()->defaultValue(0),
+            'shortage' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);

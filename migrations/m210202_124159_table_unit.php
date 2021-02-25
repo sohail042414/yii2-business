@@ -97,7 +97,6 @@ class m210202_124159_table_unit extends Migration
             'name' => 'Packet',
         ]);
 
-
     }
 
     /**

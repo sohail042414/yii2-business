@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Purchase Items');
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form_update', [
+    <?= $this->render('_form', [
         'model' => $model,
         'purchase_item' => $purchase_item,
         'searchModel' => $searchModel,

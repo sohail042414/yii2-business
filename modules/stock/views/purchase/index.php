@@ -28,22 +28,46 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            //'vendor_id',
             [
                 'attribute' => 'vendor_id',
-                'label' => 'Vendor',
+                'label' => 'Supplier',
                 'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
                 'value' => function ($data) {
                     return $data->getVendor()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
                 },
             ],
-            'notes:ntext',
             'total_amount',
-            'status',
-            //'created_at',
-            //'updated_at',
+            'bill_date',
+            [
+                'attribute' => 'status',
+                'filter'=> Html::dropDownList('SearchPurchase[status]','',['new'=>'New','complete'=>'Complete'],['prompt'=>'Select','class' => 'form-control']),
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ],
+            //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'headerOptions' => ['style' => 'width: 150px;'],
+                'header'=>'Actions',
+                'template' => '{view} {update} {delete}',            
+                'buttons' => [
+                    'update' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-pencil"></span>',             
+                            $url,['class'=>'btn btn-success','title' => 'Update']);            
+                    },     
+                    'view' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-eye-open"></span>',             
+                            $url,['class'=>'btn btn-primary','title' => 'View']);            
+                    },  
+                    'delete' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-trash"></span>',             
+                            $url,['class'=>'btn btn-danger','title' => 'Delete']);            
+                    },         
+                ],
+            
+            ],
         ],
     ]); ?>
 

@@ -25,7 +25,7 @@ class PurchaseController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -54,8 +54,16 @@ class PurchaseController extends Controller
      */
     public function actionView($id)
     {
+
+        $searchModel = new SearchPurchaseItem();
+        $searchModel->purchase_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -75,12 +83,45 @@ class PurchaseController extends Controller
             $form_data['Purchase']['status'] = 'new';        
         }
 
+        $model->total_amount = 0;
+        $model->cash_amount = 0;
+        $model->credit_amount = 0;
+        $model->previous_balance=0;
+        $model->builty_charges=0;
+        $model->labour_charges=0;
+        $model->other_charges=0;
+        $model->discount = 0;
+
+        $searchModel = new SearchPurchaseItem();
+        $searchModel->purchase_id = 0;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $purchase_item = new PurchaseItem();
+
         if ($model->load($form_data) && $model->save()) {
+
+            $purchase_item->load($form_data);
+            $purchase_item->purchase_id = $model->id;
+            $purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
+            $purchase_item->total_weight = $purchase_item->weight*$purchase_item->quantity;
+
+            if($purchase_item->save()){
+                $model->calculateTotalAmount();
+                return $this->redirect(['update', 'id' => $model->id]);            
+            }else{
+                echo '<pre>';
+                print_r($purchase_item->errors);
+                exit; 
+            }
+
             return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'purchase_item' => $purchase_item,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -112,18 +153,25 @@ class PurchaseController extends Controller
         $purchase_item = new PurchaseItem();
         $purchase_item->purchase_id = $id;
 
-        if ($model->load($form_data) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            if(!empty($form_data['PurchaseItem']['item_id'])){
+       
+                $purchase_item->load($form_data);
+                $purchase_item->purchase_id = $model->id;
+                $purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
+                $purchase_item->total_weight = $purchase_item->weight*$purchase_item->quantity;
+                $purchase_item->save();    
+            }
             
-            Yii::$app->session->setFlash('success_message', "Purchase information updated!");
+            $model->calculateTotalAmount();
 
             if($model->status == 'complete'){
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
-            //return $this->redirect(['update', 'id' => $model->id]);
-
+            return $this->redirect(['update', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
             'purchase_item' => $purchase_item,
@@ -141,7 +189,14 @@ class PurchaseController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+
+        $model = $this->findModel($id);
+        if($model->status == 'new'){
+            $model->delete();
+            Yii::$app->session->setFlash('success_message', "Purchase deleted!");
+        }else{
+            Yii::$app->session->setFlash('error_message', "Cannot delete the purchase!");
+        }
 
         return $this->redirect(['index']);
     }

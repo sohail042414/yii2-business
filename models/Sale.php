@@ -40,8 +40,8 @@ class Sale extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['client_id','bill_date','cash_amount','client_city'], 'required'],
-            [['client_id','client_city','account_id','bill_book_no','bill_no','total_amount','cash_amount','debit_amount','previous_balance','labour_charges','other_charges','builty_charges' ,'created_at', 'updated_at'], 'integer'],
+            [['client_id','bill_date','cash_amount','client_city','bill_no'], 'required'],
+            [['client_id','account_id','client_city','bill_book_no','bill_no','total_amount','cash_amount','debit_amount','previous_balance','labour_charges','other_charges','builty_charges' ,'created_at', 'updated_at'], 'integer'],
             [['notes','cargo_terminal','vehicle_no','builty_no','vehicle_no'], 'string'],
             [['status'], 'string', 'max' => 16],
         ];
@@ -61,16 +61,16 @@ class Sale extends \yii\db\ActiveRecord
             'cash_amount' => Yii::t('app', 'Cash Amount'),
             'debit_amount' => Yii::t('app', 'Debit Amount'),
             'bill_book_no'  => Yii::t('app', 'Bill Book No'),
-            'cargo_terminal' => Yii::t('app', 'Adda No (Terminal)'),
+            'cargo_terminal' => Yii::t('app', 'Builty Adda (Cargo Terminal)'),
             'builty_no' => Yii::t('app', 'Builty No'),
             'vehicle_no' => Yii::t('app', 'Vehicle (Truck) No'),
             'builty_charges' => Yii::t('app', 'Builty Charges'),
             'other_charges' => Yii::t('app', 'Other Charges'),
             'labour_charges' => Yii::t('app', 'Labour (Adda) Charges'),
             'previous_balance'=> Yii::t('app', 'Previous Balance'),
-            'bill_no' => Yii::t('app', 'Bill No'),            
+            'bill_no' => Yii::t('app', 'Bill No'),
+            'net_total' => Yii::t('app', 'Net Total'),            
             'status' => Yii::t('app', 'Status'),
-            'net_total' => Yii::t('app', 'Net Total'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
@@ -96,6 +96,14 @@ class Sale extends \yii\db\ActiveRecord
         return true;
     }
 
+    public function beforeDelete(){
+
+        foreach($this->getSaleItems()->all() as $item){
+            $item->delete();
+        }
+
+        return parent::beforeDelete();
+    }
 
     public function calculateTotalAmount(){
 

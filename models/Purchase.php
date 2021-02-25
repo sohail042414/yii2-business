@@ -21,6 +21,9 @@ use app\models\Vendor;
  */
 class Purchase extends \yii\db\ActiveRecord
 {
+
+    public $net_total = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -42,9 +45,9 @@ class Purchase extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['vendor_id'], 'required'],
-            [['vendor_id','account_id', 'total_amount', 'created_at', 'updated_at'], 'integer'],
-            [['notes'], 'string'],
+            [['vendor_id','vendor_city','bill_date','bill_no','cash_amount'], 'required'],
+            [['vendor_id','account_id','vendor_city','bill_book_no','bill_no','total_amount','cash_amount','credit_amount','previous_balance','labour_charges','other_charges','builty_charges','created_at', 'updated_at'], 'integer'],
+            [['notes','cargo_terminal','vehicle_no','builty_no','vehicle_no'], 'string'],
             [['status'], 'string', 'max' => 16],
         ];
     }
@@ -58,8 +61,19 @@ class Purchase extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'vendor_id' => Yii::t('app', 'Supplier'),
             'account_id' => Yii::t('app', 'Account'),
+            'vendor_city' => Yii::t('app', 'City'),
             'notes' => Yii::t('app', 'Notes'),
             'total_amount' => Yii::t('app', 'Total Amount'),
+            'bill_book_no'  => Yii::t('app', 'Bill Book No'),
+            'cargo_terminal' => Yii::t('app', 'Builty Adda (Cargo Terminal)'),
+            'builty_no' => Yii::t('app', 'Builty No'),
+            'vehicle_no' => Yii::t('app', 'Vehicle (Truck) No'),
+            'builty_charges' => Yii::t('app', 'Builty Charges'),
+            'other_charges' => Yii::t('app', 'Other Charges'),
+            'labour_charges' => Yii::t('app', 'Labour (Adda) Charges'),
+            'previous_balance'=> Yii::t('app', 'Previous Balance'),
+            'bill_no' => Yii::t('app', 'Bill No'),
+            'net_total' => Yii::t('app', 'Net Total'),
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
@@ -73,6 +87,26 @@ class Purchase extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PurchaseQuery(get_called_class());
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        // ...custom code here...
+        $this->bill_date = date('Y-m-d',strtotime($this->bill_date));
+        return true;
+    }
+
+    public function beforeDelete(){
+
+        foreach($this->getPurhaseItems()->all() as $item){
+            $item->delete();
+        }
+
+        return parent::beforeDelete();
     }
 
     public function getPurhaseItems()
@@ -108,5 +142,11 @@ class Purchase extends \yii\db\ActiveRecord
         }
 
         return $total;
+    }
+
+    public function getNetTotal(){
+        $total =  (int)$this->total_amount+(int)$this->labour_charges+(int)$this->builty_charges+(int)$this->other_charges+(int)$this->previous_balance;
+        $this->net_total = (int)$total-(int)$this->discount;
+        return $this->net_total;
     }
 }
