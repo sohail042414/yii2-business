@@ -86,10 +86,14 @@ class Vendor extends \yii\db\ActiveRecord
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
+    /**
+     * A vendor/suplier is 
+     */
+
     public function createAccounts(){
 
         $account = new Account();
-        $account->type = 'A';
+        $account->type = 'L';
         $account->parent = 0;
         $account->title = $this->name;
         $account->save();

@@ -20,13 +20,56 @@ class m210208_095429_table_account extends Migration
 
         $this->createTable('{{%account}}', [
             'id' => $this->primaryKey(),
+            'system'=>$this->tinyInteger()->notNull()->defaultValue(0),
             'parent' => $this->integer()->notNull()->defaultValue(0),
-            'title' => $this->string(32)->notNull(),      
+            'title' => $this->string(64)->notNull(),      
             'type' => $this->string(2)->notNull(),                      
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);
 
+        $this->pupulateAccounts();
+
+    }
+
+    public function pupulateAccounts(){
+
+        $this->insert('{{%account}}', [
+            'system' => 1,
+            'type' => 'E',
+            'parent' => 0,
+            'title' => 'Company Default Expense Account',
+            'created_at' => time(),
+            'updated_at' => time()
+
+        ]);
+
+        $this->insert('{{%account}}', [
+            'system' => 1,
+            'type' => 'A',
+            'parent' => 0,
+            'title' => 'Company Default Asset Account',
+            'created_at' => time(),
+            'updated_at' => time()
+        ]);
+
+        $this->insert('{{%account}}', [
+            'system' => 1,
+            'type' => 'R',
+            'parent' => 0,
+            'title' => 'Company Default Revenue Account',
+            'created_at' => time(),
+            'updated_at' => time()
+        ]);
+
+        $this->insert('{{%account}}', [
+            'system' => 1,
+            'type' => 'L',
+            'parent' => 0,
+            'title' => 'Company Default Liability Account',
+            'created_at' => time(),
+            'updated_at' => time()
+        ]);
     }
 
     /**

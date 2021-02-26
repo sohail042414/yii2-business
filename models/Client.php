@@ -82,7 +82,7 @@ class Client extends \yii\db\ActiveRecord
     public function createAccounts(){
 
         $account = new Account();
-        $account->type = 'E';
+        $account->type = 'A';
         $account->parent = 0;
         $account->title = $this->name;
         $account->save();

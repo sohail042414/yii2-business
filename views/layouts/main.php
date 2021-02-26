@@ -70,6 +70,7 @@ AppAsset::register($this);
                         'label'=>'Others',         
                         'items'=>[
                             ['label'=>'Cities', 'url'=>['/city/index']],
+                            ['label'=>'Cargo Terminals (Builty Adday)', 'url'=>['/cargo-terminal/index']],
                             ['label'=>'Units', 'url'=>['/unit/index']]
                         ]
                     ],

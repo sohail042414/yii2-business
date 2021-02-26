@@ -68,10 +68,13 @@ class PayableController extends Controller
         $model = new Account();
 
         if ($model->load(Yii::$app->request->post())) {
+            
             $model->type = 'L';
+            
             if(empty($model->parent)){
                 $model->parent = 0;
             }
+
             if($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);
             }
