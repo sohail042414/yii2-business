@@ -72,6 +72,7 @@ class m210202_124158_table_city extends Migration
             'name' => 'Sialkot',
             'state_id' => 1
         ]);
+        
         $this->insert('{{%city}}', [
             'name' => 'Gujrawanwala',
             'state_id' => 1

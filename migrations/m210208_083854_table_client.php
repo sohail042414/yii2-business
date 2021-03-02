@@ -28,8 +28,84 @@ class m210208_083854_table_client extends Migration
             'updated_at' => $this->integer()->notNull(),
                 ], $tableOptions);
 
-        //$this->pupulateData();  
+        $this->pupulateClients();  
     }
+
+    private function  pupulateClients(){
+
+        $this->insert('{{%client}}', [
+            'name' => 'Kamal Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Jamal Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Bilal Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Hakeem Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Naeem Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Amir Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Salman Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Habib Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%client}}', [
+            'name' => 'Karim Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+    }  
 
     /**
      * {@inheritdoc}

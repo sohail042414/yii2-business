@@ -28,6 +28,67 @@ class m210208_084420_table_vendor extends Migration
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
+
+        $this->populateVendors();       
+    }
+
+    private function populateVendors(){
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Ahmed Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Hammad Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Haroom Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Zia Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Malkoo Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Haris Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%vendor}}', [
+            'name' => 'Imran Khan',
+            'city_id' => 1,
+            'address' => '',
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
     }
 
     /**

@@ -128,8 +128,8 @@ AppAsset::register($this);
             <p class="pull-right"><?php // Yii::powered() ?></p>
         </div>
     </footer>
-
 <?php $this->endBody() ?>
+<script src="/assets/js/common.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

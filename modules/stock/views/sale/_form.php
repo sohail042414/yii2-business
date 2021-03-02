@@ -7,10 +7,19 @@ use yii\jui\DatePicker;
 use yii\grid\GridView;
 use yii\helpers\Url;
 
+use conquer\select2\Select2Widget;
+
 use app\models\Client;
 use app\models\City;
 use app\models\Item;
 use app\models\Sale;
+
+// $this->registerJsFile(
+//     '@web/js/sale.js',    
+//     [
+//          'depends' => [\yii\web\JqueryAsset::className()]
+//     ]
+// );
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Sale */
@@ -26,17 +35,41 @@ use app\models\Sale;
             <?= $form->field($sale_item, 'sale_id')->hiddenInput()->label(false); ?>
         <?php } ?>
 
-        <div class="col-md-3 col-lg-3 col-sm-12">             
-            <?= $form->field($model, 'client_id')->dropDownList(ArrayHelper::map(Client::find()->all(), 'id', 'name'), [
+        <div class="col-md-3 col-lg-3 col-sm-12">   
+
+
+            <?= $form->field($model, 'client_id')->widget(
+                Select2Widget::className(),
+                [
+                    'items'=>ArrayHelper::map(Client::find()->all(), 'id', 'name'),
+                    // 'options' =>[               
+                    //             'change'=> 'js:function(e){ $.get( "'.Yii::$app->urlManager->createUrl('client/city').'",{id:$(this).val()},function( data ) {
+                    //                 $( "#'.Html::getInputId($model, 'client_city').'" ).val(data.city_id);
+                    //             }); }'
+                            
+                    //         ],                        
+                    ]
+            ); ?>
+
+
+            <?php  /* $form->field($model, 'client_id')->dropDownList(ArrayHelper::map(Client::find()->all(), 'id', 'name'), [
                 'prompt' => 'Select',
                 'onchange'=> ' $.get( "'.Yii::$app->urlManager->createUrl('client/city').'",{id:$(this).val()},function( data ) {
                     $( "#'.Html::getInputId($model, 'client_city').'" ).val(data.city_id);
                 });'
-            ]) ?>
+            ]) */ ?>
+            
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12">             
-            <?= $form->field($model, 'client_city')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) ?>
+            <?php /*= $form->field($model, 'client_city')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) */ ?>
+            <?= $form->field($model, 'client_city')->widget(
+                Select2Widget::className(),
+                [
+                    'items'=>ArrayHelper::map(City::find()->all(), 'id', 'name'),
+                     'options' =>['tags' => true],
+                ]
+            ); ?>
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12"> 
