@@ -151,9 +151,10 @@ class SaleItemController extends Controller
 
     public function actionDetails()
     {
-        $id = Yii::$app->request->post('id');
-        
-        $data = Item::findOne($id)->toArray();
+        $id = Yii::$app->request->get('id');    
+
+        $model =Item::findOne($id);
+        $data = $model->toArray();
         
         return $this->asJson($data);
         

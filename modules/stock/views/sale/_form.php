@@ -8,7 +8,7 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\web\View;
 
-use conquer\select2\Select2Widget;
+use kartik\select2\Select2;
 
 use app\models\Client;
 use app\models\City;
@@ -43,15 +43,21 @@ $this->registerJs(
         <?php } ?>
 
         <div class="col-md-3 col-lg-3 col-sm-12">   
-
-
-            <?= $form->field($model, 'client_id')->widget(
-                Select2Widget::className(),
-                [
-                    'items'=>ArrayHelper::map(Client::find()->all(), 'id', 'name'),
-                ]
-            ); ?>
-
+        <?php 
+                echo $form->field($model, 'client_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Client::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Customer'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'pluginEvents' => [
+                        'select2:select'=> ' function() { $.get( "'.Yii::$app->urlManager->createUrl('vendor/city').'",{id:$(this).val()},function( data ) {
+                            $( "#'.Html::getInputId($model, 'client_city').'" ).val(data.city_id);
+                            $( "#'.Html::getInputId($model, 'client_city').'" ).trigger("change");
+                        }); }'
+                    ]
+                ]);
+            ?>
 
             <?php  /* $form->field($model, 'client_id')->dropDownList(ArrayHelper::map(Client::find()->all(), 'id', 'name'), [
                 'prompt' => 'Select',
@@ -64,13 +70,15 @@ $this->registerJs(
 
         <div class="col-md-3 col-lg-3 col-sm-12">             
             <?php /*= $form->field($model, 'client_city')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) */ ?>
-            <?= $form->field($model, 'client_city')->widget(
-                Select2Widget::className(),
-                [
-                    'items'=>ArrayHelper::map(City::find()->all(), 'id', 'name'),
-                     'options' =>['tags' => true],
-                ]
-            ); ?>
+            <?php 
+                echo $form->field($model, 'client_city')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(City::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select City'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]);
+            ?>
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12"> 
@@ -113,13 +121,31 @@ $this->registerJs(
             <h2>Items</h2>
         </div>
         <div class="col-md-3 col-lg-3 col-sm-12"> 
-            <?= $form->field($sale_item, 'item_id')->dropDownList(ArrayHelper::map(Item::find()->all(), 'id', 'name'), [
+            <?php 
+            /* $form->field($sale_item, 'item_id')->dropDownList(ArrayHelper::map(Item::find()->all(), 'id', 'name'), [
                 'prompt' => 'Select',
                 'onchange'=> ' $.post( "'.Yii::$app->urlManager->createUrl('stock/sale-item/details').'",{id:$(this).val()},function( data ) {
                                 $( "#'.Html::getInputId($sale_item, 'weight').'" ).val(data.weight);
                                 $( "#'.Html::getInputId($sale_item, 'sale_price').'" ).val(data.sale_price);                   
                             });'
-                ]) ?>
+                ])
+                */ 
+            ?>
+            <?php 
+                echo $form->field($sale_item, 'item_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Item'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],                    
+                    'pluginEvents' => [
+                        'select2:select'=> ' function() { $.get( "'.Yii::$app->urlManager->createUrl('stock/sale-item/details').'",{id:$(this).val()},function( data ) {
+                            $( "#'.Html::getInputId($sale_item, 'weight').'" ).val(data.weight);
+                            $( "#'.Html::getInputId($sale_item, 'sale_price').'" ).val(data.sale_price);   
+                        }); }'
+                    ]
+                ]);
+            ?>
         </div>
         <div class="col-md-3 col-lg-2 col-sm-12"> 
             <?= $form->field($sale_item, 'quantity')->textInput() ?>

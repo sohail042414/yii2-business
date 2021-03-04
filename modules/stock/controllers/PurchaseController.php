@@ -97,8 +97,13 @@ class PurchaseController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $purchase_item = new PurchaseItem();
+        $purchase_item->quantity = 1;
 
         if ($model->load($form_data) && $model->save()) {
+
+            // echo "<pre>";
+            // print_r($form_data);
+            // exit;
 
             $purchase_item->load($form_data);
             $purchase_item->purchase_id = $model->id;

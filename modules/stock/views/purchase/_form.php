@@ -119,9 +119,26 @@ $this->registerJs(
         <div class="col-md-12 col-lg-12 col-sm-12"> 
             <h2>Items</h2>
         </div>
+        
         <div class="col-md-3 col-lg-3 col-sm-12"> 
-            <?= $form->field($purchase_item, 'item_id')->dropDownList(ArrayHelper::map(Item::find()->all(), 'id', 'name'), ['prompt' => 'Select']) ?>
+            <?php /* $form->field($purchase_item, 'item_id')->dropDownList(ArrayHelper::map(Item::find()->all(), 'id', 'name'), ['prompt' => 'Select']) */ ?>
+            <?php 
+                echo $form->field($purchase_item, 'item_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Item'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],                    
+                    'pluginEvents' => [
+                        'select2:select'=> ' function() { $.get( "'.Yii::$app->urlManager->createUrl('stock/sale-item/details').'",{id:$(this).val()},function( data ) {
+                            $( "#'.Html::getInputId($purchase_item, 'weight').'" ).val(data.weight);
+                            $( "#'.Html::getInputId($purchase_item, 'purchase_price').'" ).val(data.purchase_price);   
+                        }); }'
+                    ]
+                ]);
+            ?>
         </div>
+
         <div class="col-md-2 col-lg-2 col-sm-12"> 
             <?= $form->field($purchase_item, 'quantity')->textInput() ?>
         </div>
