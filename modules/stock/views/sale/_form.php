@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use yii\jui\DatePicker;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use yii\web\View;
 
 use conquer\select2\Select2Widget;
 
@@ -20,6 +21,12 @@ use app\models\Sale;
 //          'depends' => [\yii\web\JqueryAsset::className()]
 //     ]
 // );
+
+$this->registerJs(
+    "$(document).ready(function(){
+        $('#sale-client_id').select2('focus');
+    });",
+);
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Sale */
@@ -42,13 +49,7 @@ use app\models\Sale;
                 Select2Widget::className(),
                 [
                     'items'=>ArrayHelper::map(Client::find()->all(), 'id', 'name'),
-                    // 'options' =>[               
-                    //             'change'=> 'js:function(e){ $.get( "'.Yii::$app->urlManager->createUrl('client/city').'",{id:$(this).val()},function( data ) {
-                    //                 $( "#'.Html::getInputId($model, 'client_city').'" ).val(data.city_id);
-                    //             }); }'
-                            
-                    //         ],                        
-                    ]
+                ]
             ); ?>
 
 

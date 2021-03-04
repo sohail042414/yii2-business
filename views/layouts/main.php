@@ -129,7 +129,6 @@ AppAsset::register($this);
         </div>
     </footer>
 <?php $this->endBody() ?>
-<script src="/assets/js/common.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

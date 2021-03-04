@@ -7,6 +7,8 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\jui\DatePicker;
 
+use kartik\select2\Select2;
+
 use app\models\Vendor;
 use app\models\Account;
 use app\models\City;
@@ -15,6 +17,11 @@ use app\models\Purchase;
 
 
 
+$this->registerJs(
+    "$(document).ready(function(){
+        $('#".Html::getInputId($model, 'vendor_id')."').select2('open');
+    });",
+);
 /* @var $this yii\web\View */
 /* @var $model app\models\Purchase */
 /* @var $form yii\widgets\ActiveForm */
@@ -30,17 +37,45 @@ use app\models\Purchase;
         <?php } ?>
 
             <div class="col-md-3 col-lg-3 col-sm-12">             
-                <?= $form->field($model, 'vendor_id')->dropDownList(ArrayHelper::map(Vendor::find()->all(), 'id', 'name'), [
-                    'prompt' => 'Select',
-                    'onchange'=> ' $.get( "'.Yii::$app->urlManager->createUrl('vendor/city').'",{id:$(this).val()},function( data ) {
-                        $( "#'.Html::getInputId($model, 'vendor_city').'" ).val(data.city_id);
-                    });'
-                ]) ?>
+                <?php 
+                // echo $form->field($model, 'vendor_id')->dropDownList(ArrayHelper::map(Vendor::find()->all(), 'id', 'name'), [
+                //     'prompt' => 'Select',
+                //     'onchange'=> ' $.get( "'.Yii::$app->urlManager->createUrl('vendor/city').'",{id:$(this).val()},function( data ) {
+                //         $( "#'.Html::getInputId($model, 'vendor_city').'" ).val(data.city_id);
+                //     });'
+                // ]); 
+                ?>
+
+                <?php 
+                echo $form->field($model, 'vendor_id')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(Vendor::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Customer'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'pluginEvents' => [
+                        'select2:select'=> ' function() { $.get( "'.Yii::$app->urlManager->createUrl('vendor/city').'",{id:$(this).val()},function( data ) {
+                            $( "#'.Html::getInputId($model, 'vendor_city').'" ).val(data.city_id);
+                            $( "#'.Html::getInputId($model, 'vendor_city').'" ).trigger("change");
+                        }); }'
+                    ]
+                ]);
+                ?>
 
             </div>
 
             <div class="col-md-3 col-lg-3 col-sm-12">             
-                <?= $form->field($model, 'vendor_city')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) ?>
+                <?php  //= $form->field($model, 'vendor_city')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) ?>
+            
+                <?php 
+                echo $form->field($model, 'vendor_city')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(City::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select City'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]);
+                ?>
             </div>
 
             <div class="col-md-3 col-lg-3 col-sm-12"> 
