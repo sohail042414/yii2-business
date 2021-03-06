@@ -14,6 +14,7 @@ use app\models\Client;
 use app\models\City;
 use app\models\Item;
 use app\models\Sale;
+use app\models\Unit;
 
 // $this->registerJsFile(
 //     '@web/js/sale.js',    
@@ -147,16 +148,26 @@ $this->registerJs(
                 ]);
             ?>
         </div>
-        <div class="col-md-3 col-lg-2 col-sm-12"> 
+        <div class="col-md-1 col-lg-1 col-sm-12"> 
             <?= $form->field($sale_item, 'quantity')->textInput() ?>
         </div>
-        <div class="col-md-3 col-lg-2 col-sm-12">         
+
+        <div class="col-md-2 col-lg-2 col-sm-12">         
+            <?= $form->field($sale_item, 'count_unit')->dropDownList(ArrayHelper::map(Unit::getCountUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
+         </div>
+
+        <div class="col-md-1 col-lg-1 col-sm-12">         
             <?= $form->field($sale_item, 'weight')->textInput() ?>    
         </div>
-        <div class="col-md-3 col-lg-2 col-sm-12">         
+
+        <div class="col-md-2 col-lg-2 col-sm-12">         
+            <?= $form->field($sale_item, 'weight_unit')->dropDownList(ArrayHelper::map(Unit::getWeightUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
+         </div>
+
+        <div class="col-md-1 col-lg-1 col-sm-12">         
             <?= $form->field($sale_item, 'sale_price')->textInput() ?>    
         </div>
-        <div class="col-md-3 col-lg-2 col-sm-12">         
+        <div class="col-md-1 col-lg-1 col-sm-12">         
             <?= $form->field($sale_item, 'shortage')->textInput() ?>    
         </div>
         <div class="col-md-3 col-lg-1 col-sm-12" style="padding-top:24px;">            
@@ -187,6 +198,7 @@ $this->registerJs(
                         'attribute' => 'quantity',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'quantity'),       
                     ],
+                    'count_unit',   
                     'shortage',                    
                     'sale_price',
                     [

@@ -3,7 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+
 use app\models\Category;
+use app\models\Unit;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
@@ -18,11 +20,19 @@ use app\models\Category;
 
     <?= $form->field($model, 'category')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'title'), ['prompt' => 'Select']) ?>
 
+    <?= $form->field($model, 'item_no')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'type')->dropDownList($model->getTypesList(), ['prompt' => 'Select Type']) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'count_unit')->dropDownList(ArrayHelper::map(Unit::getCountUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
+
     <?= $form->field($model, 'weight')->textInput() ?>
+
+    <?= $form->field($model, 'weight_unit')->dropDownList(ArrayHelper::map(Unit::getWeightUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
 
     <?= $form->field($model, 'purchase_price')->textInput() ?>
 

@@ -33,8 +33,14 @@ class m210202_124159_table_unit extends Migration
 
         $this->insert('{{%unit}}', [
             'type' => 'weight',
-            'symbol' => 'Kg',
+            'symbol' => 'kg',
             'name' => 'Kilogram',
+        ]);
+
+        $this->insert('{{%unit}}', [
+            'type' => 'weight',
+            'symbol' => 'pao',
+            'name' => 'Pao',
         ]);
 
         $this->insert('{{%unit}}', [
@@ -75,8 +81,8 @@ class m210202_124159_table_unit extends Migration
 
         $this->insert('{{%unit}}', [
             'type' => 'count',
-            'symbol' => 'box',
-            'name' => 'Box',
+            'symbol' => 'bori',
+            'name' => 'Bori',
         ]);
 
         $this->insert('{{%unit}}', [
@@ -87,8 +93,8 @@ class m210202_124159_table_unit extends Migration
 
         $this->insert('{{%unit}}', [
             'type' => 'count',
-            'symbol' => 'packet',
-            'name' => 'Packet',
+            'symbol' => 'box',
+            'name' => 'Box',
         ]);
 
         $this->insert('{{%unit}}', [

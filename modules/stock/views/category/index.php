@@ -33,7 +33,31 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_at',
             //'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'headerOptions' => ['style' => 'width: 150px;'],
+                'header'=>'Actions',
+                'template' => '{view} {update} {delete}',            
+                'buttons' => [
+                    'update' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-pencil"></span>',             
+                            $url,['class'=>'btn btn-success','title' => 'Update']);            
+                    },     
+                    'view' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-eye-open"></span>',             
+                            $url,['class'=>'btn btn-primary','title' => 'View']);            
+                    },  
+                    'delete' => function ($url,$model) {
+                        return Html::a(            
+                            '<span class="glyphicon glyphicon-trash"></span>',             
+                            $url,['class'=>'btn btn-danger','title' => 'Delete']);            
+                    },         
+                ],
+            
+            ],
         ],
     ]); ?>
 

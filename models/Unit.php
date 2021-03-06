@@ -56,4 +56,19 @@ class Unit extends \yii\db\ActiveRecord
     {
         return new UnitQuery(get_called_class());
     }
+
+    public static function getCountUnits(){
+        return self::find()
+        ->where(['type' => 'count'])
+        ->all();
+    }
+
+    public static function getWeightUnits(){
+        return self::find()
+        ->where(['type' => 'weight'])
+        ->all();
+    }
+
+
+    
 }
