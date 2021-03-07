@@ -113,20 +113,23 @@ class SaleController extends Controller
         $model->other_charges=0;
         $model->discount = 0;
 
-        if ($model->load($form_data) && $model->save()) {
-            
-            $sale_item->load($form_data);
-            $sale_item->sale_id = $model->id;
-            $sale_item->sale_total = $sale_item->sale_price*$sale_item->quantity;
-            $sale_item->total_weight = $sale_item->weight*$sale_item->quantity;
 
-            if($sale_item->save()){
-                $model->calculateTotalAmount();
-                return $this->redirect(['update', 'id' => $model->id]);            
-            }else{
-                echo '<pre>';
-                print_r($sale_item->errors);
-                exit; 
+        if ($model->load($form_data) && $model->save()) {
+     
+            if(!empty($form_data['SaleItem']['item_id'])){
+
+                $sale_item->load($form_data);
+                $sale_item->sale_id = $model->id;
+                $sale_item->sale_total = $sale_item->sale_price*$sale_item->weight;
+                
+                if($sale_item->save()){
+                    $model->calculateTotalAmount();
+                    return $this->redirect(['update', 'id' => $model->id]);            
+                }else{
+                    // echo '<pre>';
+                    // print_r($sale_item->errors);
+                    // exit; 
+                }
             }
 
         }
@@ -165,16 +168,15 @@ class SaleController extends Controller
         $sale_item->sale_id = $id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
+            
             if(!empty($form_data['SaleItem']['item_id'])){
-
                 $sale_item->load($form_data);
                 $sale_item->sale_id = $model->id;
-                $sale_item->sale_total = $sale_item->sale_price*$sale_item->quantity;
-                $sale_item->total_weight = $sale_item->weight*$sale_item->quantity;
+                $sale_item->sale_total = $sale_item->sale_price*$sale_item->weight;                
                 $sale_item->save();    
             }
             
+            $model->status = 'new';            
             $model->calculateTotalAmount();
 
             if($model->status == 'complete'){

@@ -79,6 +79,12 @@ class Client extends \yii\db\ActiveRecord
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
+    public function getSales()
+    {
+        return $this->hasMany(Sale::className(), ['client_id' => 'id']);
+    }
+    
+
     public function createAccounts(){
 
         $account = new Account();

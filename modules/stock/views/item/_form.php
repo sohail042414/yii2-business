@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 
 use app\models\Category;
 use app\models\Unit;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
@@ -18,7 +19,17 @@ use app\models\Unit;
 
     <?php // $form->field($model, 'category')->textInput() ?>
 
-    <?= $form->field($model, 'category')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'title'), ['prompt' => 'Select']) ?>
+    <?php //= $form->field($model, 'category')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'title'), ['prompt' => 'Select']) ?>
+
+    <?php 
+        echo $form->field($model, 'category')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Category::find()->all(), 'id', 'title'),
+            'options' => ['placeholder' => 'Select Category'],
+            'pluginOptions' => [
+                'allowClear' => true,
+            ]
+        ]);
+    ?>
 
     <?= $form->field($model, 'item_no')->textInput(['maxlength' => true]) ?>
 

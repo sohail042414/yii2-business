@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Item */
+/* @var $model app\models\Payment */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Items'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Payments'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="item-view">
+<div class="payment-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,21 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'category',
-            [
-                'attribute' => 'category',
-                'value' => $model->getCategory()->one()->title,     
-            ],
-            'name',
-            'type',
-            'count_unit',
-            'weight',
-            'weight_unit',
-            'purchase_price',
-            'sale_price',
-            'description:ntext',
-            //'created_at',
-            //'updated_at',
+            'client_id',
+            'amount',
+            'payment_method',
+            'account_no',
+            'transection',
+            'notes:ntext',
+            'payment_date',
+            'created_at',
+            'updated_at',
         ],
     ]) ?>
 

@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Sale;
+use app\models\CargoTerminal;
 
 /**
- * SearchSale represents the model behind the search form of `app\models\Sale`.
+ * SearchCargoTerminal represents the model behind the search form of `app\models\CargoTerminal`.
  */
-class SearchSale extends Sale
+class SearchCargoTerminal extends CargoTerminal
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class SearchSale extends Sale
     public function rules()
     {
         return [
-            [['id', 'client_id','bill_no','bill_book_no', 'total_amount', 'created_at', 'updated_at'], 'integer'],
-            [['notes', 'status'], 'safe'],
+            [['id', 'city_id'], 'integer'],
+            [['name', 'phone'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SearchSale extends Sale
      */
     public function search($params)
     {
-        $query = Sale::find();
+        $query = CargoTerminal::find();
 
         // add conditions that should always apply here
 
@@ -59,16 +59,11 @@ class SearchSale extends Sale
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'client_id' => $this->client_id,
-            'bill_no' => $this->bill_no,
-            'bill_book_no' => $this->bill_book_no,            
-            'total_amount' => $this->total_amount,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'city_id' => $this->city_id,
         ]);
 
-        $query->andFilterWhere(['like', 'notes', $this->notes])
-            ->andFilterWhere(['like', 'status', $this->status]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }

@@ -26,8 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'client_id',
+            //'id',
+            'bill_no',
+            'bill_book_no',         
+            [
+                'attribute' => 'client_id',
+                'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                'value' => function ($data) {
+                    return $data->getClient()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
+                },
+            ],
             'total_amount',
             'status',
             //['class' => 'yii\grid\ActionColumn'],

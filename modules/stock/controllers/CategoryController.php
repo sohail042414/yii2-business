@@ -25,7 +25,7 @@ class CategoryController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view',],
+                        'actions' => ['index','create','update','view','delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    
@@ -34,7 +34,7 @@ class CategoryController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -115,7 +115,17 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        
+        $model = $this->findModel($id);
+
+        $items_count = $model->getItems()->count();
+
+        if($items_count > 0){
+            Yii::$app->session->setFlash('error_message', "Category cannot be deleted, First delete items in this category!");  
+        }else{
+            $model->delete();
+        }
+       
 
         return $this->redirect(['index']);
     }

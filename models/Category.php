@@ -67,4 +67,9 @@ class Category extends \yii\db\ActiveRecord
     {
         return new CategoryQuery(get_called_class());
     }
+
+    public function getItems()
+    {
+        return $this->hasMany(Item::className(), ['category' => 'id']);
+    }
 }

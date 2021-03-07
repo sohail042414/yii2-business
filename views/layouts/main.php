@@ -58,13 +58,17 @@ AppAsset::register($this);
                         ]
                     ],
                     [
-                        'label'=>'Reports', 
+                        'label'=>'Reports',
                         'url'=>['/reports/index'], 
                         'items'=>[
                             ['label'=>'Trail Balance', 'url'=>['/reports/trailbalance/index']],
                             ['label'=>'By Vendor', 'url'=>['/account/payable/index']],
                             ['label'=>'By Client', 'url'=>['/account/receivable/index']],
                         ]
+                    ],
+                    [
+                        'label'=>'Receive Payments', 
+                        'url'=>['/payment/index'],
                     ],
                     [
                         'label'=>'Others',         
@@ -98,6 +102,7 @@ AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => $menuItems,
             ]);
+
             NavBar::end();
 
         ?>

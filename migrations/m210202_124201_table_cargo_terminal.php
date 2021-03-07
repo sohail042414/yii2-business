@@ -5,7 +5,8 @@ use yii\db\Migration;
 /**
  * Class m210226_090757_table_cargo_terminal
  */
-class m210226_090757_table_cargo_terminal extends Migration
+
+class m210202_124201_table_cargo_terminal extends Migration
 {
     /**
      * {@inheritdoc}
@@ -24,8 +25,47 @@ class m210226_090757_table_cargo_terminal extends Migration
             'city_id' => $this->integer()->notNull(),            
             'phone' => $this->string(16)->defaultValue(NUll),                            
                 ], $tableOptions);
-                        
+        
+        $this->populateData();
+    
     }
+
+    private function populateData(){
+
+        $this->insert('{{%cargo_terminal}}', [
+            'name' => 'Khan Goods Transport',
+            'city_id' => 1,
+            'phone' => '051442342342'
+        ]);
+
+        $this->insert('{{%cargo_terminal}}', [
+            'name' => 'Faisal Movers',
+            'city_id' => 1,
+            'phone' => '0514242342'
+        ]);
+
+        $this->insert('{{%cargo_terminal}}', [
+            'name' => 'Niazi Add',
+            'city_id' => 1,
+            'phone' => '0514242342'
+        ]);
+
+        $this->insert('{{%cargo_terminal}}', [
+            'name' => 'Bilal Daewo Add',
+            'city_id' => 2,
+            'phone' => '0514242342'
+        ]);
+
+        $this->insert('{{%cargo_terminal}}', [
+            'name' => 'Sky ways',
+            'city_id' => 2,
+            'phone' => '0514242342'
+        ]);
+
+
+    }
+
+
 
     /**
      * {@inheritdoc}

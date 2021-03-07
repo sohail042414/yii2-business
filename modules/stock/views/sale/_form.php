@@ -15,6 +15,7 @@ use app\models\City;
 use app\models\Item;
 use app\models\Sale;
 use app\models\Unit;
+use app\models\CargoTerminal;
 
 // $this->registerJsFile(
 //     '@web/js/sale.js',    
@@ -46,7 +47,7 @@ $this->registerJs(
         <div class="col-md-3 col-lg-3 col-sm-12">   
         <?php 
                 echo $form->field($model, 'client_id')->widget(Select2::classname(), [
-                    'data' => ArrayHelper::map(Client::find()->all(), 'id', 'name'),
+                    'data' => ArrayHelper::map(Client::find()->orderBy(['name'=>SORT_ASC])->all(), 'id', 'name'),
                     'options' => ['placeholder' => 'Select Customer'],
                     'pluginOptions' => [
                         'allowClear' => true,
@@ -105,7 +106,16 @@ $this->registerJs(
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12"> 
-            <?= $form->field($model, 'cargo_terminal')->textInput() ?>  
+            <?php //= $form->field($model, 'cargo_terminal')->textInput() ?>  
+            <?php 
+                echo $form->field($model, 'cargo_terminal')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(CargoTerminal::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Item'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]);
+            ?>
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12"> 
@@ -134,7 +144,8 @@ $this->registerJs(
             ?>
             <?php 
                 echo $form->field($sale_item, 'item_id')->widget(Select2::classname(), [
-                    'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
+                    //'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
+                    'data' => Item::getDropdownList(),
                     'options' => ['placeholder' => 'Select Item'],
                     'pluginOptions' => [
                         'allowClear' => true,
@@ -185,7 +196,15 @@ $this->registerJs(
                 'showFooter' => true,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'item_id',
+                    //'item_id',
+                    [
+                        'label' => 'Item no',
+                        'attribute' => 'item_id',
+                        'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                        'value' => function ($data) {
+                            return $data->getItem()->one()->item_no; // $data['name'] for array data, e.g. using SqlDataProvider.
+                        },
+                    ],
                     [
                         'label' => 'Item Name',
                         'attribute' => 'item_id',
@@ -198,20 +217,18 @@ $this->registerJs(
                         'attribute' => 'quantity',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'quantity'),       
                     ],
-                    'count_unit',   
-                    'shortage',                    
+                    'count_unit',                                           
                     'sale_price',
                     [
                         'attribute' => 'sale_total',
                         'label' => 'Total',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'sale_total'),       
                     ],
-                    'weight',
                     [
-                        'attribute' => 'total_weight',
-                        'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'total_weight'),       
+                        'attribute' => 'weight',
+                        'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'weight'),       
                     ],
-               
+                    'shortage',               
                     //['class' => 'yii\grid\ActionColumn'],
                     [
                         'class' => 'yii\grid\ActionColumn',

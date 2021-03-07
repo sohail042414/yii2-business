@@ -14,6 +14,7 @@ use app\models\Account;
 use app\models\City;
 use app\models\Item;
 use app\models\Purchase;
+use app\models\CargoTerminal;
 
 
 
@@ -103,7 +104,16 @@ $this->registerJs(
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12"> 
-            <?= $form->field($model, 'cargo_terminal')->textInput() ?>  
+            <?php //= $form->field($model, 'cargo_terminal')->textInput() ?>  
+            <?php 
+                echo $form->field($model, 'cargo_terminal')->widget(Select2::classname(), [
+                    'data' => ArrayHelper::map(CargoTerminal::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Item'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]);
+            ?>
         </div>
 
         <div class="col-md-3 col-lg-3 col-sm-12"> 
@@ -124,7 +134,8 @@ $this->registerJs(
             <?php /* $form->field($purchase_item, 'item_id')->dropDownList(ArrayHelper::map(Item::find()->all(), 'id', 'name'), ['prompt' => 'Select']) */ ?>
             <?php 
                 echo $form->field($purchase_item, 'item_id')->widget(Select2::classname(), [
-                    'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
+                    //'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
+                    'data' => Item::getDropdownList(),
                     'options' => ['placeholder' => 'Select Item'],
                     'pluginOptions' => [
                         'allowClear' => true,

@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Vendor;
-use app\models\SearchVendor;
+use app\models\CargoTerminal;
+use app\models\SearchCargoTerminal;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * VendorController implements the CRUD actions for Vendor model.
+ * CargoTerminalController implements the CRUD actions for CargoTerminal model.
  */
-class VendorController extends Controller
+class CargoTerminalController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -21,32 +20,22 @@ class VendorController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index','create','update','view','city','delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],                    
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    //'delete' => ['POST'],
+                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Vendor models.
+     * Lists all CargoTerminal models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchVendor();
+        $searchModel = new SearchCargoTerminal();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -56,7 +45,7 @@ class VendorController extends Controller
     }
 
     /**
-     * Displays a single Vendor model.
+     * Displays a single CargoTerminal model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,16 +58,15 @@ class VendorController extends Controller
     }
 
     /**
-     * Creates a new Vendor model.
+     * Creates a new CargoTerminal model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Vendor();
+        $model = new CargoTerminal();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->createAccounts();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -88,7 +76,7 @@ class VendorController extends Controller
     }
 
     /**
-     * Updates an existing Vendor model.
+     * Updates an existing CargoTerminal model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -108,7 +96,7 @@ class VendorController extends Controller
     }
 
     /**
-     * Deletes an existing Vendor model.
+     * Deletes an existing CargoTerminal model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -116,38 +104,21 @@ class VendorController extends Controller
      */
     public function actionDelete($id)
     {
-
-        $model = $this->findModel($id);
-
-        $purchase_count = $model->getPurchases()->count();
-
-        if($purchase_count > 0){
-            Yii::$app->session->setFlash('error_message', "Supplier cannot be deleted, it has been used in other sections!");  
-        }else{
-            $model->delete();
-        }
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
-
-    public function actionCity($id)
-    {
-        $model = $this->findModel($id);
-        
-        return $this->asJson($model->toArray());
-    }
-
     /**
-     * Finds the Vendor model based on its primary key value.
+     * Finds the CargoTerminal model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Vendor the loaded model
+     * @return CargoTerminal the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Vendor::findOne($id)) !== null) {
+        if (($model = CargoTerminal::findOne($id)) !== null) {
             return $model;
         }
 

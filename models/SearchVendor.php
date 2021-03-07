@@ -17,7 +17,7 @@ class SearchVendor extends Vendor
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'created_at', 'city_id','updated_at'], 'integer'],
             [['name', 'phone', 'city', 'address'], 'safe'],
         ];
     }
@@ -65,7 +65,7 @@ class SearchVendor extends Vendor
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'city', $this->city])
+            ->andFilterWhere(['like', 'city_id', $this->city_id])
             ->andFilterWhere(['like', 'address', $this->address]);
 
         return $dataProvider;

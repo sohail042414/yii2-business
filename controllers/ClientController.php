@@ -26,7 +26,7 @@ class ClientController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','city'],
+                        'actions' => ['index','create','update','view','city','delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    
@@ -35,7 +35,7 @@ class ClientController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -124,7 +124,15 @@ class ClientController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $sale_count = $model->getSales()->count();
+
+        if($sale_count > 0){
+            Yii::$app->session->setFlash('error_message', "Customer cannot be deleted, it has been used in other sections!");  
+        }else{
+            $model->delete();
+        }
 
         return $this->redirect(['index']);
     }

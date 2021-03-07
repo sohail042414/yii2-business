@@ -65,4 +65,30 @@ class City extends \yii\db\ActiveRecord
         $this->state_id = 1;
         return true;
     }
+
+    public function getClients()
+    {
+        return $this->hasMany(Client::className(), ['city_id' => 'id']);
+    }
+
+    public function getVendors()
+    {
+        return $this->hasMany(Vendor::className(), ['city_id' => 'id']);
+    }
+
+    public function getCargoTerminals()
+    {
+        return $this->hasMany(CargoTerminal::className(), ['city_id' => 'id']);
+    }
+
+    // public function getSales()
+    // {
+    //     return $this->hasMany(Sale::className(), ['city_id' => 'id']);
+    // }
+        
+    // public function getPurchase()
+    // {
+    //     return $this->hasMany(Purchase::className(), ['city_id' => 'id']);
+    // }
+
 }

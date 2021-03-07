@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use app\models\SaleItem;
+
 /**
  * This is the model class for table "{{%sale}}".
  *
@@ -41,7 +42,7 @@ class Sale extends \yii\db\ActiveRecord
     {
         return [
             [['client_id','bill_date','cash_amount','client_city','bill_no'], 'required'],
-            [['client_id','account_id','client_city','bill_book_no','bill_no','total_amount','cash_amount','debit_amount','previous_balance','labour_charges','other_charges','builty_charges' ,'created_at', 'updated_at'], 'integer'],
+            [['client_id','discount','account_id','client_city','bill_book_no','bill_no','total_amount','cash_amount','debit_amount','previous_balance','labour_charges','other_charges','builty_charges' ,'created_at', 'updated_at'], 'integer'],
             [['notes','cargo_terminal','vehicle_no','builty_no','vehicle_no'], 'string'],
             [['status'], 'string', 'max' => 16],
         ];
@@ -69,6 +70,7 @@ class Sale extends \yii\db\ActiveRecord
             'labour_charges' => Yii::t('app', 'Labour (Adda) Charges'),
             'previous_balance'=> Yii::t('app', 'Previous Balance'),
             'bill_no' => Yii::t('app', 'Bill No'),
+            'discount' =>  Yii::t('app', 'Discount'),
             'net_total' => Yii::t('app', 'Net Total'),            
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),

@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Sale;
+use app\models\Payment;
 
 /**
- * SearchSale represents the model behind the search form of `app\models\Sale`.
+ * SearchPayment represents the model behind the search form of `app\models\Payment`.
  */
-class SearchSale extends Sale
+class SearchPayment extends Payment
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class SearchSale extends Sale
     public function rules()
     {
         return [
-            [['id', 'client_id','bill_no','bill_book_no', 'total_amount', 'created_at', 'updated_at'], 'integer'],
-            [['notes', 'status'], 'safe'],
+            [['id', 'client_id', 'amount', 'created_at', 'updated_at'], 'integer'],
+            [['payment_method', 'account_no', 'transection', 'notes', 'payment_date'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SearchSale extends Sale
      */
     public function search($params)
     {
-        $query = Sale::find();
+        $query = Payment::find();
 
         // add conditions that should always apply here
 
@@ -60,15 +60,16 @@ class SearchSale extends Sale
         $query->andFilterWhere([
             'id' => $this->id,
             'client_id' => $this->client_id,
-            'bill_no' => $this->bill_no,
-            'bill_book_no' => $this->bill_book_no,            
-            'total_amount' => $this->total_amount,
+            'amount' => $this->amount,
+            'payment_date' => $this->payment_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'notes', $this->notes])
-            ->andFilterWhere(['like', 'status', $this->status]);
+        $query->andFilterWhere(['like', 'payment_method', $this->payment_method])
+            ->andFilterWhere(['like', 'account_no', $this->account_no])
+            ->andFilterWhere(['like', 'transection', $this->transection])
+            ->andFilterWhere(['like', 'notes', $this->notes]);
 
         return $dataProvider;
     }

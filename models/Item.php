@@ -63,6 +63,8 @@ class Item extends \yii\db\ActiveRecord
             'count_unit' => Yii::t('app', 'Count Unit'),            
             'weight' => Yii::t('app', 'Weight'),            
             'category' => Yii::t('app', 'Category'),
+            'purchase_price' => Yii::t('app', 'Purchase Price (Per Kg)'),
+            'sale_price' => Yii::t('app', 'Sale Price (Per Kg)'),
             'name' => Yii::t('app', 'Name'),
             'description' => Yii::t('app', 'Description'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -97,9 +99,24 @@ class Item extends \yii\db\ActiveRecord
         return $this->hasMany(PurchaseItem::className(), ['item_id' => 'id']);
     }
 
+
     public function getCategory()
-    {
+    {           
         return $this->hasOne(Category::className(), ['id' => 'category']);
-        // return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public static function getDropdownList(){
+        
+        $data = self::find()->all();
+
+        $list = array();
+
+        foreach($data as $item){
+            $list[$item->id] = '['.$item->item_no.'] '.$item->name.'';
+        }
+
+        return $list;
+
+
     }
 }

@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\City;
 
+use kartik\select2\Select2;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Client */
 /* @var $form yii\widgets\ActiveForm */
@@ -18,7 +20,18 @@ use app\models\City;
 
     <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) ?>
+    <?php //= $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name'), ['prompt' => 'Select']) ?>
+
+
+    <?php 
+        echo $form->field($model, 'city_id')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(City::find()->all(), 'id', 'name'),
+            'options' => ['placeholder' => 'Select City'],
+            'pluginOptions' => [
+                'allowClear' => true,
+            ]
+        ]);
+    ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 

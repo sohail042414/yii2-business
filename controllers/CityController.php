@@ -23,7 +23,7 @@ class CityController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    //'delete' => ['POST'],
                 ],
             ],
         ];
@@ -108,7 +108,18 @@ class CityController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $clients_count = $model->getClients()->count();       
+        $vendor_count = $model->getVendors()->count();
+        $terminal_count = $model->getCargoTerminals()->count();
+
+
+        if($clients_count > 0 || $vendor_count > 0 || $terminal_count > 0 ){
+            Yii::$app->session->setFlash('error_message', "City cannot be deleted, it has been used in other sections!");  
+        }else{
+            $model->delete();
+        }
 
         return $this->redirect(['index']);
     }

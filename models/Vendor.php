@@ -86,6 +86,11 @@ class Vendor extends \yii\db\ActiveRecord
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
+    public function getPurchases()
+    {
+        return $this->hasMany(Purchase::className(), ['vendor_id' => 'id']);
+    }
+
     /**
      * A vendor/suplier is 
      */

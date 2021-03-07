@@ -41,7 +41,7 @@ class SaleItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sale_id', 'item_id', 'quantity', 'sale_price', 'sale_total','weight'], 'required'],
+            [['sale_id', 'item_id', 'quantity', 'sale_price', 'sale_total','weight','weight_unit','count_unit'], 'required'],
             [['sale_id', 'item_id','shortage' ,'weight','quantity', 'sale_price', 'sale_total', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -56,12 +56,12 @@ class SaleItem extends \yii\db\ActiveRecord
             'sale_id' => Yii::t('app', 'Sale ID'),
             'item_id' => Yii::t('app', 'Item ID'),
             'quantity' => Yii::t('app', 'Quantity'),
-            'weight' => Yii::t('app', 'Weight'),
+            'weight' => Yii::t('app', 'Weight(Kg)'),
             'weight_unit' => Yii::t('app', 'Unit'),
-            'total_weight' => Yii::t('app', 'Weight'),
+            'total_weight' => Yii::t('app', 'Total Weight (kg)'),
             'count_unit' => Yii::t('app', 'Unit'),
             'shortage' => Yii::t('app', 'Shortage'),
-            'sale_price' => Yii::t('app', 'Rate'),
+            'sale_price' => Yii::t('app', 'Rate/Kg'),
             'sale_total' => Yii::t('app', 'Sale Total'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
