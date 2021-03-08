@@ -117,6 +117,27 @@ class Item extends \yii\db\ActiveRecord
 
         return $list;
 
+    }
+
+
+    public function getAvailable(){
+       
+        $weight = 0;
+
+        $purchased = $this->getPurchaseItems()->all();
+
+        foreach($purchased as $item){
+            $weight+=$item->weight;
+        }
+
+
+        $sold = $this->getSaleItems()->all();
+
+        foreach($sold as $item){
+            $weight-=$item->weight;
+        }
+
+        return $weight;
 
     }
 }

@@ -64,7 +64,10 @@ $config = [
             'class' => 'app\modules\stock\Module',
         ],
         'accounts' => [
-            'class' => 'app\modules\accounts\module',
+            'class' => 'app\modules\accounts\Module',
+        ],
+        'reports' => [
+            'class' => 'app\modules\reports\Module',
         ],
     ],
     'params' => $params,

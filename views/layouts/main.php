@@ -61,9 +61,10 @@ AppAsset::register($this);
                         'label'=>'Reports',
                         'url'=>['/reports/index'], 
                         'items'=>[
+                            ['label'=>'Stock Report', 'url'=>['/reports/stock/index']],
                             ['label'=>'Trail Balance', 'url'=>['/reports/trailbalance/index']],
                             ['label'=>'By Vendor', 'url'=>['/account/payable/index']],
-                            ['label'=>'By Client', 'url'=>['/account/receivable/index']],
+                            ['label'=>'By Client', 'url'=>['/account/receivable/index']],                            
                         ]
                     ],
                     [
