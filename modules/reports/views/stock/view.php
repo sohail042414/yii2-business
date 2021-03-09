@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
@@ -13,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="item-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>Stock Report Details for Item (<?= Html::encode($this->title) ?>)</h1>
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -25,27 +26,48 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'category',
-            [
-                'attribute' => 'category',
-                'value' => $model->getCategory()->one()->title,     
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                [
+                    'attribute' => 'category',
+                    'value' => $model->getCategory()->one()->title,     
+                ],
+                'name',
+                'type',
             ],
-            'name',
-            'type',
-            'count_unit',
-            'weight',
-            'weight_unit',
-            'purchase_price',
-            'sale_price',
-            'description:ntext',
-            //'created_at',
-            //'updated_at',
-        ],
-    ]) ?>
+        ]) ?>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [                
+                'count_unit',
+                'weight',
+                'purchase_price',
+                'sale_price',
+            ],
+        ]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'item_id',
+                'name',
+                'quantity',
+                'weight',
+                'sale_id'          
+            ],
+        ]); ?>
+        </div>
+    </div>
 
 </div>

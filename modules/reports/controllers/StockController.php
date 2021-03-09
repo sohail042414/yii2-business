@@ -25,7 +25,7 @@ class StockController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index','view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    
@@ -64,8 +64,14 @@ class StockController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new SearchItem();
+        $searchModel->id = $id;
+        $dataProvider = $searchModel->searchReport(Yii::$app->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
