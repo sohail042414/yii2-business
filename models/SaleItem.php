@@ -41,7 +41,7 @@ class SaleItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sale_id', 'item_id', 'quantity', 'sale_price', 'sale_total','weight','weight_unit','count_unit'], 'required'],
+            [['sale_id', 'item_id', 'quantity', 'sale_price','type','weight'], 'required'],
             [['sale_id', 'item_id','shortage' ,'weight','quantity', 'sale_price', 'sale_total', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -55,10 +55,11 @@ class SaleItem extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'sale_id' => Yii::t('app', 'Sale ID'),
             'item_id' => Yii::t('app', 'Item ID'),
+            'type' => Yii::t('app', 'Type'),
             'quantity' => Yii::t('app', 'Quantity'),
             'weight' => Yii::t('app', 'Weight(Kg)'),
             'weight_unit' => Yii::t('app', 'Unit'),
-            'total_weight' => Yii::t('app', 'Total Weight (kg)'),
+            'total_weight' => Yii::t('app', 'Weight(Kg)'),
             'count_unit' => Yii::t('app', 'Unit'),
             'shortage' => Yii::t('app', 'Shortage'),
             'sale_price' => Yii::t('app', 'Rate/Kg'),
@@ -86,6 +87,16 @@ class SaleItem extends \yii\db\ActiveRecord
     {
         if (!parent::beforeSave($insert)) {
             return false;
+        }
+
+        if($this->type =='wholesale'){
+            $this->total_weight = $this->weight;
+            $this->sale_total = $this->weight*$this->sale_price;
+        }
+
+        if($this->type =='retail'){
+            $this->total_weight = $this->weight*$this->quantity;
+            $this->sale_total = $this->quantity*$this->sale_price;
         }
 
         // ...custom code here...

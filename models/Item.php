@@ -43,7 +43,7 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category','item_no', 'name','purchase_price','sale_price','weight','weight_unit','count_unit','type'], 'required'],
+            [['category','item_no', 'name','purchase_price','sale_price','weight','type'], 'required'],
             [['category','item_no', 'created_at','weight' ,'updated_at','purchase_price','sale_price'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 64],
@@ -81,11 +81,22 @@ class Item extends \yii\db\ActiveRecord
         return new ItemQuery(get_called_class());
     }
 
-    public function getTypesList(){
+    public static function getTypesList(){
         return [
             'wholesale'=>'Whole Sale',
             'retail' => 'Retail'
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        // ...custom code here...
+
+        return true;
     }
 
 

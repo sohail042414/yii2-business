@@ -133,16 +133,6 @@ $this->registerJs(
         </div>
         <div class="col-md-3 col-lg-3 col-sm-12"> 
             <?php 
-            /* $form->field($sale_item, 'item_id')->dropDownList(ArrayHelper::map(Item::find()->all(), 'id', 'name'), [
-                'prompt' => 'Select',
-                'onchange'=> ' $.post( "'.Yii::$app->urlManager->createUrl('stock/sale-item/details').'",{id:$(this).val()},function( data ) {
-                                $( "#'.Html::getInputId($sale_item, 'weight').'" ).val(data.weight);
-                                $( "#'.Html::getInputId($sale_item, 'sale_price').'" ).val(data.sale_price);                   
-                            });'
-                ])
-                */ 
-            ?>
-            <?php 
                 echo $form->field($sale_item, 'item_id')->widget(Select2::classname(), [
                     //'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
                     'data' => Item::getDropdownList(),
@@ -153,29 +143,36 @@ $this->registerJs(
                     'pluginEvents' => [
                         'select2:select'=> ' function() { $.get( "'.Yii::$app->urlManager->createUrl('stock/sale-item/details').'",{id:$(this).val()},function( data ) {
                             $( "#'.Html::getInputId($sale_item, 'weight').'" ).val(data.weight);
+                            $( "#'.Html::getInputId($sale_item, 'type').'" ).val(data.type);
                             $( "#'.Html::getInputId($sale_item, 'sale_price').'" ).val(data.sale_price);   
                         }); }'
                     ]
                 ]);
             ?>
         </div>
-        <div class="col-md-1 col-lg-1 col-sm-12"> 
+        <div class="col-md-2 col-lg-2 col-sm-12">         
+            <?= $form->field($sale_item, 'type')->dropDownList(Item::getTypesList(), ['prompt' => 'Select Type']) ?>
+        </div>
+        <div class="col-md-2 col-lg-2 col-sm-12"> 
             <?= $form->field($sale_item, 'quantity')->textInput() ?>
         </div>
-
+        <?php /* ?>
         <div class="col-md-2 col-lg-2 col-sm-12">         
             <?= $form->field($sale_item, 'count_unit')->dropDownList(ArrayHelper::map(Unit::getCountUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
          </div>
+        <?php */ ?>
 
         <div class="col-md-1 col-lg-1 col-sm-12">         
             <?= $form->field($sale_item, 'weight')->textInput() ?>    
         </div>
-
+        
+        <?php /* ?>
         <div class="col-md-2 col-lg-2 col-sm-12">         
             <?= $form->field($sale_item, 'weight_unit')->dropDownList(ArrayHelper::map(Unit::getWeightUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
          </div>
+        <?php */ ?>
 
-        <div class="col-md-1 col-lg-1 col-sm-12">         
+        <div class="col-md-2 col-lg-2 col-sm-12">         
             <?= $form->field($sale_item, 'sale_price')->textInput() ?>    
         </div>
         <div class="col-md-1 col-lg-1 col-sm-12">         
@@ -196,7 +193,7 @@ $this->registerJs(
                 'showFooter' => true,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    //'item_id',
+                    'item_id',
                     [
                         'label' => 'Item no',
                         'attribute' => 'item_id',
@@ -213,22 +210,23 @@ $this->registerJs(
                             return $data->getItem()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
                         },
                     ],
+                    'type',
                     [
                         'attribute' => 'quantity',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'quantity'),       
                     ],
-                    'count_unit',                                           
+                    //'count_unit',                                           
                     'sale_price',
+                    [
+                        'attribute' => 'total_weight',
+                        'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'total_weight'),       
+                    ],
+                    'shortage',
                     [
                         'attribute' => 'sale_total',
                         'label' => 'Total',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'sale_total'),       
-                    ],
-                    [
-                        'attribute' => 'weight',
-                        'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'weight'),       
-                    ],
-                    'shortage',               
+                    ],               
                     //['class' => 'yii\grid\ActionColumn'],
                     [
                         'class' => 'yii\grid\ActionColumn',

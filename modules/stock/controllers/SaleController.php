@@ -119,16 +119,15 @@ class SaleController extends Controller
             if(!empty($form_data['SaleItem']['item_id'])){
 
                 $sale_item->load($form_data);
-                $sale_item->sale_id = $model->id;
-                $sale_item->sale_total = $sale_item->sale_price*$sale_item->weight;
+                $sale_item->sale_id = $model->id;                
                 
                 if($sale_item->save()){
                     $model->calculateTotalAmount();
                     return $this->redirect(['update', 'id' => $model->id]);            
                 }else{
-                    // echo '<pre>';
-                    // print_r($sale_item->errors);
-                    // exit; 
+                    echo '<pre>';
+                    print_r($sale_item->errors);
+                    exit; 
                 }
             }
 
@@ -172,7 +171,6 @@ class SaleController extends Controller
             if(!empty($form_data['SaleItem']['item_id'])){
                 $sale_item->load($form_data);
                 $sale_item->sale_id = $model->id;
-                $sale_item->sale_total = $sale_item->sale_price*$sale_item->weight;                
                 $sale_item->save();    
             }
             

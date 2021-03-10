@@ -143,14 +143,19 @@ $this->registerJs(
                     'pluginEvents' => [
                         'select2:select'=> ' function() { $.get( "'.Yii::$app->urlManager->createUrl('stock/sale-item/details').'",{id:$(this).val()},function( data ) {
                             $( "#'.Html::getInputId($purchase_item, 'weight').'" ).val(data.weight);
+                            $( "#'.Html::getInputId($purchase_item, 'type').'" ).val(data.type);
                             $( "#'.Html::getInputId($purchase_item, 'purchase_price').'" ).val(data.purchase_price);   
                         }); }'
                     ]
                 ]);
             ?>
         </div>
+        
+        <div class="col-md-2 col-lg-2 col-sm-12">         
+            <?= $form->field($purchase_item, 'type')->dropDownList(Item::getTypesList(), ['prompt' => 'Select Type']) ?>
+        </div>
 
-        <div class="col-md-2 col-lg-2 col-sm-12"> 
+        <div class="col-md-1 col-lg-1 col-sm-12"> 
             <?= $form->field($purchase_item, 'quantity')->textInput() ?>
         </div>
 
@@ -162,7 +167,7 @@ $this->registerJs(
             <?= $form->field($purchase_item, 'purchase_price')->textInput() ?>    
         </div>
 
-        <div class="col-md-2 col-lg-2 col-sm-12">         
+        <div class="col-md-1 col-lg-1 col-sm-12">         
             <?= $form->field($purchase_item, 'shortage')->textInput() ?>    
         </div>
 
@@ -181,7 +186,15 @@ $this->registerJs(
                 'showFooter' => true,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'item_id',
+                    'item_id',                    
+                    [
+                        'label' => 'Item No',
+                        'attribute' => 'item_no',
+                        'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                        'value' => function ($data) {
+                            return $data->getItem()->one()->item_no; // $data['name'] for array data, e.g. using SqlDataProvider.
+                        },
+                    ],
                     [
                         'label' => 'Item Name',
                         'attribute' => 'item_id',
@@ -190,13 +203,16 @@ $this->registerJs(
                             return $data->getItem()->one()->name; // $data['name'] for array data, e.g. using SqlDataProvider.
                         },
                     ],
-                    //'quantity',
+                    'type',
                     [
                         'attribute' => 'quantity',
                         'footer' => "Total : ".Purchase::getTotal($dataProvider->models, 'quantity'),       
                     ],
+                    [
+                        'attribute' => 'total_weight',
+                        'footer' => "Total : ".Purchase::getTotal($dataProvider->models, 'total_weight'),       
+                    ],
                     'purchase_price',
-                    //'purchase_total',
                     [
                         'attribute' => 'purchase_total',
                         'footer' => "Total : ".Purchase::getTotal($dataProvider->models, 'purchase_total'),       

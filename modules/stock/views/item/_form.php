@@ -37,13 +37,13 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'type')->dropDownList($model->getTypesList(), ['prompt' => 'Select Type']) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?php //= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'count_unit')->dropDownList(ArrayHelper::map(Unit::getCountUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
+    <?php //= $form->field($model, 'count_unit')->dropDownList(ArrayHelper::map(Unit::getCountUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
 
     <?= $form->field($model, 'weight')->textInput() ?>
 
-    <?= $form->field($model, 'weight_unit')->dropDownList(ArrayHelper::map(Unit::getWeightUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
+    <?php //= $form->field($model, 'weight_unit')->dropDownList(ArrayHelper::map(Unit::getWeightUnits(),'symbol', 'name'), ['prompt' => 'Select']) ?>
 
     <?= $form->field($model, 'purchase_price')->textInput() ?>
 

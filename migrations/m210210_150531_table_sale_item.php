@@ -24,6 +24,7 @@ class m210210_150531_table_sale_item extends Migration
             'sale_id' => $this->integer()->notNull(),
             'item_id' => $this->integer()->notNull(),
             'quantity' => $this->integer()->notNull(),
+            'type' => "ENUM('wholesale', 'retail') default 'wholesale'",
             'shortage' => $this->integer()->notNull()->defaultValue(0),
             'count_unit' => "ENUM('bori','corton','box','dozen') default NULL",                 
             'weight_unit' => "ENUM('kg','gram','mann') default 'kg'",

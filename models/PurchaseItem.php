@@ -42,7 +42,7 @@ class PurchaseItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['purchase_id', 'weight','item_id', 'quantity', 'purchase_price', 'purchase_total',], 'required'],
+            [['purchase_id', 'weight','type','item_id', 'quantity', 'purchase_price', 'purchase_total',], 'required'],
             [['purchase_id', 'item_id', 'quantity','weight', 'purchase_price', 'purchase_total', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -76,5 +76,29 @@ class PurchaseItem extends \yii\db\ActiveRecord
     public function getItem()
     {           
         return $this->hasOne(Item::className(), ['id' => 'item_id']);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if($this->type =='wholesale'){
+            $this->total_weight = $this->weight;
+            $this->purchase_total = $this->weight*$this->purchase_price;
+        }
+
+        if($this->type =='retail'){
+            $this->total_weight = $this->weight*$this->quantity;
+            $this->purchase_total = $this->quantity*$this->purchase_price;
+        }
+
+        // ...custom code here...
+        if(empty($this->shortage)){
+            $this->shortage = 0;
+        }
+
+        return true;
     }
 }

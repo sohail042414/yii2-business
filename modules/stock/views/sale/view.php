@@ -73,6 +73,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
                     'item_id',
                     [
+                        'label' => 'Item no',
+                        'attribute' => 'item_id',
+                        'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                        'value' => function ($data) {
+                            return $data->getItem()->one()->item_no; // $data['name'] for array data, e.g. using SqlDataProvider.
+                        },
+                    ],
+                    [
                         'label' => 'Item Name',
                         'attribute' => 'item_id',
                         'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
@@ -84,18 +92,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'quantity',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'quantity'),       
                     ],
-                    'shortage',                    
+                    'shortage',
+                    [
+                        'attribute' => 'total_weight',
+                        'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'total_weight'),       
+                    ],                    
                     'sale_price',
                     [
                         'attribute' => 'sale_total',
                         'label' => 'Total',
                         'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'sale_total'),       
                     ],
-                    'weight',
-                    [
-                        'attribute' => 'total_weight',
-                        'footer' => "Total : ".Sale::getTotal($dataProvider->models, 'total_weight'),       
-                    ],
+                    //'weight',
                
                     //['class' => 'yii\grid\ActionColumn'],
                     [
