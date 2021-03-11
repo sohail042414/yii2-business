@@ -19,7 +19,7 @@ use app\models\SaleItem;
  */
 class Sale extends \yii\db\ActiveRecord
 {
-    public $net_total=0;
+    //public $net_total=0;
 
     /**
      * {@inheritdoc}
@@ -95,6 +95,8 @@ class Sale extends \yii\db\ActiveRecord
 
         // ...custom code here...
         $this->bill_date = date('Y-m-d',strtotime($this->bill_date));
+
+        $this->getNetTotal();
         return true;
     }
 

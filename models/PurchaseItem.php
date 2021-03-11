@@ -42,7 +42,7 @@ class PurchaseItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['purchase_id', 'weight','type','item_id', 'quantity', 'purchase_price', 'purchase_total',], 'required'],
+            [['purchase_id', 'weight','type','item_id', 'quantity', 'purchase_price',], 'required'],
             [['purchase_id', 'item_id', 'quantity','weight', 'purchase_price', 'purchase_total', 'created_at', 'updated_at'], 'integer'],
         ];
     }

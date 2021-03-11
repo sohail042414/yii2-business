@@ -17,25 +17,46 @@ use app\models\Purchase;
 use app\models\CargoTerminal;
 
 
+if ($model->isNewRecord) {
+    $this->registerJs(
+        "$(document).ready(function(){
+            $('#".Html::getInputId($model, 'vendor_id')."').select2('open');
+        });",
+    );
+
+}else{
+    $this->registerJs(
+        "$(document).ready(function(){
+            $('#".Html::getInputId($purchase_item, 'item_id')."').select2('open');
+        });",
+    );   
+}
 
 $this->registerJs(
     "$(document).ready(function(){
-        $('#".Html::getInputId($model, 'vendor_id')."').select2('open');
+        $('#complete_purchase').on('click',function(){
+            $('#".Html::getInputId($model, 'status')."').val('complete');
+            $('#purchase-form').submit();
+        });
     });",
 );
+
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Purchase */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="purchase-form">
-    <?php $form = ActiveForm::begin(['enableClientValidation'=> false]); ?>
+    <?php $form = ActiveForm::begin(['id'=>'purchase-form','enableClientValidation'=> false]); ?>
     
     <div class="row">
 
         <?php if(!$model->isNewRecord){ ?>
             <?= $form->field($purchase_item, 'purchase_id')->hiddenInput()->label(false); ?>
         <?php } ?>
+            
+        <?= $form->field($model, 'status')->hiddenInput(['value'=>'new'])->label(false); ?>
 
             <div class="col-md-3 col-lg-3 col-sm-12">             
                 <?php 
@@ -296,7 +317,7 @@ $this->registerJs(
     <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12"> 
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('app', 'Complete Purchase'), ['class' => 'btn btn-success']) ?>
+                <?= Html::button(Yii::t('app', 'Complete Purchase'), ['class' => 'btn btn-success','id'=>"complete_purchase"]) ?>
             </div>    
         </div>
     </div>

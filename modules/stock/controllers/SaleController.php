@@ -156,7 +156,7 @@ class SaleController extends Controller
 
         if(\Yii::$app->request->isPost) {
             $form_data = Yii::$app->request->post();
-            $form_data['Purchase']['status'] = 'new';
+            //$form_data['Purchase']['status'] = 'new';
         }
         
         $searchModel = new SearchSaleItem();
@@ -174,7 +174,6 @@ class SaleController extends Controller
                 $sale_item->save();    
             }
             
-            $model->status = 'new';            
             $model->calculateTotalAmount();
 
             if($model->status == 'complete'){
@@ -184,7 +183,7 @@ class SaleController extends Controller
             return $this->redirect(['update', 'id' => $model->id]);
         }
 
-        $model->getNetTotal();
+        //$model->getNetTotal();
 
         return $this->render('update', [
             'model' => $model,

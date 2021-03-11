@@ -101,22 +101,16 @@ class PurchaseController extends Controller
 
         if ($model->load($form_data) && $model->save()) {
 
-            // echo "<pre>";
-            // print_r($form_data);
-            // exit;
-
             $purchase_item->load($form_data);
             $purchase_item->purchase_id = $model->id;
-            $purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
-            $purchase_item->total_weight = $purchase_item->weight*$purchase_item->quantity;
 
             if($purchase_item->save()){
                 $model->calculateTotalAmount();
                 return $this->redirect(['update', 'id' => $model->id]);            
             }else{
-                echo '<pre>';
-                print_r($purchase_item->errors);
-                exit; 
+                // echo '<pre>';
+                // print_r($purchase_item->errors);
+                // exit; 
             }
 
             return $this->redirect(['update', 'id' => $model->id]);
@@ -145,8 +139,8 @@ class PurchaseController extends Controller
         $form_data = array();
 
         if(\Yii::$app->request->isPost) {
-            $form_data = Yii::$app->request->post();
-            $form_data['Purchase']['status'] = 'new';
+            $form_data = Yii::$app->request->post();                        
+            //$form_data['Purchase']['status'] = Yii::$app->request->post('submit') == 'Complete Purchase' ? 'complete' : 'new';
         }
         
 
@@ -164,9 +158,13 @@ class PurchaseController extends Controller
        
                 $purchase_item->load($form_data);
                 $purchase_item->purchase_id = $model->id;
-                $purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
-                $purchase_item->total_weight = $purchase_item->weight*$purchase_item->quantity;
-                $purchase_item->save();    
+                //$purchase_item->purchase_total = $purchase_item->purchase_price*$purchase_item->quantity;
+                //$purchase_item->total_weight = $purchase_item->weight*$purchase_item->quantity;
+                if(!$purchase_item->save()){
+                    // echo '<pre>';
+                    // print_r($purchase_item->errors);
+                    // exit; 
+                }    
             }
             
             $model->calculateTotalAmount();
@@ -177,6 +175,9 @@ class PurchaseController extends Controller
 
             return $this->redirect(['update', 'id' => $model->id]);
         }
+
+        //$model->getNetTotal();        
+
         return $this->render('update', [
             'model' => $model,
             'purchase_item' => $purchase_item,

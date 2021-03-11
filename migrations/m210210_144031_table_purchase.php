@@ -39,6 +39,7 @@ class m210210_144031_table_purchase extends Migration
             'total_amount' => $this->integer()->notNull()->defaultValue(0),
             'cash_amount' => $this->integer()->notNull()->defaultValue(0), 
             'credit_amount' => $this->integer()->notNull()->defaultValue(0),
+            'net_total' => $this->integer()->notNull()->defaultValue(0),  
             'status' => $this->string(16)->notNull()->defaultValue('new'),                      
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),

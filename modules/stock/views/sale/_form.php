@@ -23,10 +23,27 @@ use app\models\CargoTerminal;
 //          'depends' => [\yii\web\JqueryAsset::className()]
 //     ]
 // );
+if ($model->isNewRecord) {
+    $this->registerJs(
+        "$(document).ready(function(){
+            $('#".Html::getInputId($model, 'client_id')."').select2('open');
+        });",
+    );
+}else{
+    $this->registerJs(
+        "$(document).ready(function(){
+            $('#".Html::getInputId($sale_item, 'item_id')."').select2('open');
+        });",
+    ); 
+}
+
 
 $this->registerJs(
     "$(document).ready(function(){
-        $('#sale-client_id').select2('focus');
+        $('#complete-sale').on('click',function(){
+            $('#".Html::getInputId($model, 'status')."').val('complete');
+            $('#sale-form').submit();
+        });
     });",
 );
 
@@ -37,12 +54,13 @@ $this->registerJs(
 
 <div class="sale-form">
 
-    <?php $form = ActiveForm::begin(['enableClientValidation'=> false]); ?>
+    <?php $form = ActiveForm::begin(['id'=>'sale-form','enableClientValidation'=> false]); ?>
 
     <div class="row">
         <?php if(!$model->isNewRecord){ ?>
             <?= $form->field($sale_item, 'sale_id')->hiddenInput()->label(false); ?>
         <?php } ?>
+        <?= $form->field($model, 'status')->hiddenInput(['value'=>'new'])->label(false); ?>
 
         <div class="col-md-3 col-lg-3 col-sm-12">   
         <?php 
@@ -130,6 +148,8 @@ $this->registerJs(
     <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12"> 
             <h2>Items</h2>
+            <!-- <p class="">For retail item enter weight per item</p>
+            <p class="">For whole sale item enter complete weight</p> -->
         </div>
         <div class="col-md-3 col-lg-3 col-sm-12"> 
             <?php 
@@ -304,7 +324,7 @@ $this->registerJs(
     <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12"> 
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('app', 'Complete Purchase'), ['name'=>'action','class' => 'btn btn-success']) ?>
+            <?= Html::button(Yii::t('app', 'Complete Sale'), ['class' => 'btn btn-success','id'=>"complete-sale"]) ?>
             </div>    
         </div>
     </div>   

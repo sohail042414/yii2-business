@@ -22,7 +22,7 @@ use app\models\Vendor;
 class Purchase extends \yii\db\ActiveRecord
 {
 
-    public $net_total = 0;
+    //public $net_total = 0;
 
     /**
      * {@inheritdoc}
@@ -46,7 +46,7 @@ class Purchase extends \yii\db\ActiveRecord
     {
         return [
             [['vendor_id','vendor_city','bill_date','bill_no','cash_amount'], 'required'],
-            [['vendor_id','account_id','vendor_city','bill_book_no','bill_no','total_amount','cash_amount','credit_amount','previous_balance','labour_charges','other_charges','builty_charges','created_at', 'updated_at'], 'integer'],
+            [['vendor_id','account_id','vendor_city','bill_book_no','bill_no','total_amount','cash_amount','credit_amount','previous_balance','labour_charges','other_charges','builty_charges','net_total','created_at', 'updated_at'], 'integer'],
             [['notes','cargo_terminal','vehicle_no','builty_no','vehicle_no'], 'string'],
             [['status'], 'string', 'max' => 16],
         ];
@@ -97,6 +97,9 @@ class Purchase extends \yii\db\ActiveRecord
 
         // ...custom code here...
         $this->bill_date = date('Y-m-d',strtotime($this->bill_date));
+
+        $this->net_total = $this->getNetTotal();
+
         return true;
     }
 

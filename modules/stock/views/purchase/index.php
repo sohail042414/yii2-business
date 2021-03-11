@@ -50,20 +50,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'header'=>'Actions',
                 'template' => '{view} {update} {delete}',            
                 'buttons' => [
-                    'update' => function ($url,$model) {
-                        return Html::a(            
-                            '<span class="glyphicon glyphicon-pencil"></span>',             
-                            $url,['class'=>'btn btn-success','title' => 'Update']);            
-                    },     
                     'view' => function ($url,$model) {
                         return Html::a(            
                             '<span class="glyphicon glyphicon-eye-open"></span>',             
                             $url,['class'=>'btn btn-primary','title' => 'View']);            
-                    },  
-                    'delete' => function ($url,$model) {
+                    }, 
+
+                    'update' => function ($url,$model) {
+                        if($model->status == 'new'){
                         return Html::a(            
-                            '<span class="glyphicon glyphicon-trash"></span>',             
-                            $url,['class'=>'btn btn-danger','title' => 'Delete']);            
+                            '<span class="glyphicon glyphicon-pencil"></span>',             
+                            $url,['class'=>'btn btn-success','title' => 'Update']);            
+                        }
+                    },      
+                    'delete' => function ($url,$model) {
+                        if($model->status == 'new'){
+                            return Html::a(            
+                                '<span class="glyphicon glyphicon-trash"></span>',             
+                                $url,['class'=>'btn btn-danger','title' => 'Delete']);            
+                        }
                     },         
                 ],
             
