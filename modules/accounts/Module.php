@@ -5,7 +5,7 @@ namespace app\modules\accounts;
 /**
  * accounts module definition class
  */
-class module extends \yii\base\Module
+class Module extends \yii\base\Module
 {
     /**
      * {@inheritdoc}
