@@ -125,9 +125,9 @@ class SaleController extends Controller
                     $model->calculateTotalAmount();
                     return $this->redirect(['update', 'id' => $model->id]);            
                 }else{
-                    echo '<pre>';
-                    print_r($sale_item->errors);
-                    exit; 
+                    // echo '<pre>';
+                    // print_r($sale_item->errors);
+                    // exit; 
                 }
             }
 
@@ -177,6 +177,7 @@ class SaleController extends Controller
             $model->calculateTotalAmount();
 
             if($model->status == 'complete'){
+                $model->createJournalEnty();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 

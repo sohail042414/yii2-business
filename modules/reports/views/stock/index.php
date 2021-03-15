@@ -52,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return number_format(($data->getAvailable()/40),2,'.',','); // $data['name'] for array data, e.g. using SqlDataProvider.
                 },
             ],
+            /*
             [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => ['style' => 'width: 150px;'],
@@ -66,6 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             
             ],
+            */
             
         ],
     ]); ?>

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'id',
+                'id',                
                 [
                     'attribute' => 'category',
                     'value' => $model->getCategory()->one()->title,     
@@ -44,11 +44,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-6 col-md-6 col-lg-6">
         <?= DetailView::widget([
             'model' => $model,
-            'attributes' => [                
-                'count_unit',
+            'attributes' => [ 
+                'item_no',
                 'weight',
-                'purchase_price',
-                'sale_price',
+                [
+                    'label' => 'Available ',
+                    'value' => function ($data) {
+                        return $data->getAvailable(); // $data['name'] for array data, e.g. using SqlDataProvider.
+                    },   
+                ],
+                //'purchase_price',
+                //'sale_price',
             ],
         ]) ?>
         </div>
@@ -62,9 +68,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'item_id',
                 'name',
-                'quantity',
-                'weight',
-                'sale_id'          
+                [
+                    'attribute' => 'weight',
+                    'header'=> 'Available(KG)',
+                    'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                    'value' => function ($data) {
+                        return $data->getAvailable(); // $data['name'] for array data, e.g. using SqlDataProvider.
+                    },
+                ],
+                [
+                    'attribute' => 'weight',
+                    'header'=> 'Available(Mann)',
+                    'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
+                    'value' => function ($data) {
+                        return number_format(($data->getAvailable()/40),2,'.',','); // $data['name'] for array data, e.g. using SqlDataProvider.
+                    },
+                ],        
             ],
         ]); ?>
         </div>

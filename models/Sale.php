@@ -149,4 +149,8 @@ class Sale extends \yii\db\ActiveRecord
     {           
         return $this->hasOne(Client::className(), ['id' => 'client_id']);
     }
+
+    public function createJournalEnty(){
+        
+    }
 }
